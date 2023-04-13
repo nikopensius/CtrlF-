@@ -66,11 +66,11 @@ The User Interaction Handler module is responsible for handling user interaction
 
     Implementation Details
 
-        The User Interaction Handler module will be implemented in JavaScript using event listeners and DOM manipulation techniques. It will interact with the DOM of the web page to capture user input from the search bar and handle keyboard events. It will also communicate with other components of the extension, such as the Content Script and Background Script, using messaging mechanisms provided by the browser extension APIs.
+    - The User Interaction Handler module will be implemented in JavaScript using event listeners and DOM manipulation techniques. It will interact with the DOM of the web page to capture user input from the search bar and handle keyboard events. It will also communicate with other components of the extension, such as the Content Script and Background Script, using messaging mechanisms provided by the browser extension APIs.
 
     Testing and Validation
 
-        The User Interaction Handler module will be thoroughly tested for various scenarios, including valid and invalid search queries, different user interactions with UI elements, and error conditions. Unit testing, integration testing, and user acceptance testing will be performed to ensure the proper functioning of the module and its interaction with other components of the CtrlF+ Extension.
+    - The User Interaction Handler module will be thoroughly tested for various scenarios, including valid and invalid search queries, different user interactions with UI elements, and error conditions. Unit testing, integration testing, and user acceptance testing will be performed to ensure the proper functioning of the module and its interaction with other components of the CtrlF+ Extension.
 
 
 2. **Text Content Capturer**
@@ -87,11 +87,11 @@ The Text Content Capturer module is responsible for capturing and extracting tex
     
     Implementation Details
     
-        The Text Content Capturer module will be implemented in JavaScript, using DOM manipulation techniques provided by the browser extension APIs. It will utilize various methods and properties of the DOM, such as getElementById(), getElementsByTagName(), textContent, and others, to traverse and extract text content from the web page's DOM. It may also use regular expressions and string manipulation techniques to filter out irrelevant content and prepare the captured text content for further processing.
+    - The Text Content Capturer module will be implemented in JavaScript, using DOM manipulation techniques provided by the browser extension APIs. It will utilize various methods and properties of the DOM, such as getElementById(), getElementsByTagName(), textContent, and others, to traverse and extract text content from the web page's DOM. It may also use regular expressions and string manipulation techniques to filter out irrelevant content and prepare the captured text content for further processing.
 
     Testing and Validation
         
-        The Text Content Capturer module will be thoroughly tested for various scenarios, including different types of web pages with varying structures and contents. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in capturing and extracting relevant text content from the web page's DOM. Test cases will cover different types of text-containing elements, nested elements, hidden elements, dynamically loaded content, and edge cases to ensure comprehensive capture of all relevant text content.
+    - The Text Content Capturer module will be thoroughly tested for various scenarios, including different types of web pages with varying structures and contents. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in capturing and extracting relevant text content from the web page's DOM. Test cases will cover different types of text-containing elements, nested elements, hidden elements, dynamically loaded content, and edge cases to ensure comprehensive capture of all relevant text content.
 
 
 3. **Text Content Processor**
@@ -107,11 +107,11 @@ The Text Content Processor module is responsible for processing the captured tex
    
     Implementation Details
    
-        The Text Content Processor module will be implemented in JavaScript, utilizing various text processing libraries or algorithms, such as natural language processing (NLP) libraries or regular expressions, to perform tokenization, lemmatization, and normalization tasks. It will also implement logic to handle search settings, such as applying case sensitivity, word boundaries, and other search options, based on user preferences or system configuration.
+    - The Text Content Processor module will be implemented in JavaScript, utilizing various text processing libraries or algorithms, such as natural language processing (NLP) libraries or regular expressions, to perform tokenization, lemmatization, and normalization tasks. It will also implement logic to handle search settings, such as applying case sensitivity, word boundaries, and other search options, based on user preferences or system configuration.
 
     Testing and Validation
 
-        The Text Content Processor module will be thoroughly tested for various scenarios, including different types of text content with varying word forms, cases, and search settings. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in processing text content and applying search settings accurately. Test cases will cover different types of word forms, cases, normalization rules, and search settings to ensure accurate processing and customization of search behavior according to user preferences or system configuration.
+    - The Text Content Processor module will be thoroughly tested for various scenarios, including different types of text content with varying word forms, cases, and search settings. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in processing text content and applying search settings accurately. Test cases will cover different types of word forms, cases, normalization rules, and search settings to ensure accurate processing and customization of search behavior according to user preferences or system configuration.
 
 
 
