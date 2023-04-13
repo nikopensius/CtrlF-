@@ -52,7 +52,26 @@ This document serves as a comprehensive guide for the development team, providin
 ### Content scripts
 The content script module for CtrlF+ can be organized into different functionalities, responsible for specific tasks related to the search functionality. Here are some possible content script modules:
 
-1. User Interaction Handler: This module can handle user interactions with the search functionality, such as capturing user input from the search bar, handling keyboard events for search triggers (e.g., pressing Enter), and responding to user interactions with UI elements related to search (e.g., buttons, checkboxes).
+1. User Interaction Handler
+The User Interaction Handler module is responsible for handling user interactions with the search functionality of the CtrlF+ Extension. It captures user input from the search bar and handles keyboard events for search triggers, such as pressing Enter. It also responds to user interactions with UI elements related to search, such as buttons and checkboxes.
+
+- Responsibilities
+
+    - Capture user input from the search bar and validate input for keywords or phrases.
+    - Handle keyboard events for search triggers, such as Enter key, to initiate the search process.
+    - Respond to user interactions with UI elements related to search, such as buttons for search options, checkboxes for settings, etc.
+    - Validate user input and provide feedback to the user on search queries, settings, and options.
+    - Communicate with other components of the extension, such as the Content Script and Background Script, to trigger search operations and update the UI accordingly.
+    - Handle error conditions and provide error messages to the user for any search-related issues.
+
+- Implementation Details
+
+    The User Interaction Handler module will be implemented in JavaScript using event listeners and DOM manipulation techniques. It will interact with the DOM of the web page to capture user input from the search bar and handle keyboard events. It will also communicate with other components of the extension, such as the Content Script and Background Script, using messaging mechanisms provided by the browser extension APIs.
+
+- Testing and Validation
+
+    The User Interaction Handler module will be thoroughly tested for various scenarios, including valid and invalid search queries, different user interactions with UI elements, and error conditions. Unit testing, integration testing, and user acceptance testing will be performed to ensure the proper functioning of the module and its interaction with other components of the CtrlF+ Extension.
+
 
 2. Text Content Capturer: This module can capture and extract text content from the web page's DOM, including elements such as paragraphs, headings, lists, and other relevant text nodes. It can be responsible for filtering out irrelevant content and preparing the captured text content for further processing.
 
