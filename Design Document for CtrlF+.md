@@ -135,7 +135,7 @@ The UI Injector module is responsible for injecting user interface (UI) elements
     Testing and Validation
 
     - The UI Injector module will be thoroughly tested for various scenarios, including different types of web pages, search results, highlighting styles, and user interactions. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in injecting UI elements, displaying search results, highlighting search matches, and handling UI interactions accurately. Test cases will cover different types of web pages, search results, highlighting styles, and user interactions to ensure smooth and responsive user experience and proper rendering of UI elements according to search results and user interactions.
-    
+
 
 5. **Search Coordinator**
     
@@ -160,3 +160,19 @@ The UI Injector module is responsible for injecting user interface (UI) elements
     - The Search Coordinator module should undergo thorough testing and validation to ensure its correctness and robustness. This may include unit testing, integration testing, and end-to-end testing of the module's functionality, as well as validation against the requirements and design specifications of the extension. Additionally, any communication between the Search Coordinator and other components should be tested and validated to ensure proper coordination and synchronization. Proper error handling and exception handling should also be implemented and tested to ensure that the module can handle unexpected scenarios gracefully.
 
 Each content script module should have clear responsibilities and interfaces, and should be designed to be modular, efficient, and maintainable. The modules should work together seamlessly to provide the desired search functionality to the user, while minimizing impact on the performance and usability of the web page.
+
+
+## Background scripts
+Background scripts are responsible for managing different aspects of the background functionality of a Chrome extension. Background script modules for CtrlF+ extension include:
+
+1. Search Coordinator: This module is responsible for coordinating the interactions between different content script modules, managing the search process flow, and communicating with other components of the extension, such as the popup page and UI Injector module, to trigger actions and update the search results.
+
+2. Search Settings Manager: This module could be responsible for managing search settings, such as case sensitivity, word boundaries, and search options (e.g., lemmatization, synonym recommendation). It could handle storing and retrieving these settings from storage, as well as providing methods for updating and applying the settings during the search process.
+
+3. Search History Manager: This module could be responsible for managing search history, such as storing previous search queries and results, and providing methods for retrieving and displaying the search history to the user. It could also handle clearing the search history, managing the size of the search history, and implementing search history-related features such as search suggestions based on past search queries.
+
+4. Error Handler: This module could be responsible for capturing and handling potential errors or exceptions that may occur during the search process. It could implement logging and error reporting mechanisms to help diagnose and resolve issues, as well as providing user-friendly error messages or notifications to the user.
+
+5. Background Task Manager: This module could be responsible for managing background tasks, such as scheduling periodic tasks for search indexing, updating search results, or handling other background processes related to the search functionality. It could implement appropriate scheduling mechanisms, such as timers or event-based triggers, and handle the coordination and execution of background tasks.
+
+6. Communication Handler: This module could be responsible for handling inter-component communication between different components of the extension, such as content scripts, UI Injector, and Search Coordinator. It could implement message passing mechanisms, such as using the Chrome extension messaging API or other appropriate mechanisms, for sending and receiving messages between components, as well as handling message processing, error handling, and synchronization.
