@@ -137,12 +137,12 @@ The UI Injector module is responsible for injecting user interface (UI) elements
     - The UI Injector module will be thoroughly tested for various scenarios, including different types of web pages, search results, highlighting styles, and user interactions. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in injecting UI elements, displaying search results, highlighting search matches, and handling UI interactions accurately. Test cases will cover different types of web pages, search results, highlighting styles, and user interactions to ensure smooth and responsive user experience and proper rendering of UI elements according to search results and user interactions.
 
 
-    | Responsibility | APIs, Frameworks, and Libraries |
-    | --- | --- |
-    | Inject UI elements into the web page's DOM | JQuery, React, Angular, Vue, etc. |
-    | Display search results and highlight search matches | JQuery UI, Bootstrap, Material-UI, etc. |
-    | Provide user feedback | Toastr, SweetAlert2, Noty, etc. |
-    | Handle display of UI elements for settings and options | JQuery UI, Bootstrap, Material-UI, etc. |
+        | Responsibility | APIs, Frameworks, and Libraries |
+        | --- | --- |
+        | Inject UI elements into the web page's DOM | JQuery, React, Angular, Vue, etc. |
+        | Display search results and highlight search matches | JQuery UI, Bootstrap, Material-UI, etc. |
+        | Provide user feedback | Toastr, SweetAlert2, Noty, etc. |
+        | Handle display of UI elements for settings and options | JQuery UI, Bootstrap, Material-UI, etc. |
 
 5. **Search Coordinator**
     
@@ -153,6 +153,7 @@ The UI Injector module is responsible for injecting user interface (UI) elements
     - Communication with Other Components: The Search Coordinator communicates with other components of the extension, such as the background script and popup page, to trigger actions and update the search results. It sends commands and receives responses from these components to coordinate the overall search functionality. For example, it may send a request to the background script to fetch search settings from the options page, or send a message to the popup page to update the search results displayed to the user.
 
     Implementation Details
+
     The Search Coordinator module may utilize the following APIs, frameworks, and libraries to implement its functionality:
 
     - Chrome Extension APIs: The Chrome extension APIs provide a set of functions and events for interacting with the extension's background script, popup page, and content scripts. These APIs can be used by the Search Coordinator to send and receive messages, trigger actions, and update the search results.
@@ -161,10 +162,8 @@ The UI Injector module is responsible for injecting user interface (UI) elements
     - Event Handling Libraries: Libraries such as jQuery or addEventListener can be used for handling events in the content scripts. These libraries can help with managing event listeners, handling DOM events, and coordinating the flow of actions in the Search Coordinator module.
     - Custom APIs, Frameworks, or Libraries: Depending on the specific requirements of the extension, custom APIs, frameworks, or libraries may be utilized to implement the functionality of the Search Coordinator module. These may include any custom communication protocols, libraries for managing the search process flow, or other specialized tools for coordinating interactions between components.
 
-    Note: The specific APIs, frameworks, and libraries used in the Search Coordinator module may vary depending on the implementation details and technologies chosen for the development of the Chrome extension. The above list is provided as an example and is not exhaustive.
-
     Testing and Validation
-    
+
     - The Search Coordinator module should undergo thorough testing and validation to ensure its correctness and robustness. This may include unit testing, integration testing, and end-to-end testing of the module's functionality, as well as validation against the requirements and design specifications of the extension. Additionally, any communication between the Search Coordinator and other components should be tested and validated to ensure proper coordination and synchronization. Proper error handling and exception handling should also be implemented and tested to ensure that the module can handle unexpected scenarios gracefully.
 
 Each content script module should have clear responsibilities and interfaces, and should be designed to be modular, efficient, and maintainable. The modules should work together seamlessly to provide the desired search functionality to the user, while minimizing impact on the performance and usability of the web page.
