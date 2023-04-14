@@ -117,8 +117,54 @@ The Text Content Processor module is responsible for processing the captured tex
 
 
 
-4. UI Injector: This module can inject UI elements into the web page's DOM to display search results, highlight search matches, and provide user feedback. It can also handle the display of UI elements for settings, options, and other user interactions related to the search functionality.
+4. **UI Injector**
+The UI Injector module is responsible for injecting user interface (UI) elements into the web page's Document Object Model (DOM) to display search results, highlight search matches, and provide user feedback. Additionally, this module also handles the display of UI elements for settings, options, and other user interactions related to the search functionality of the CtrlF+ Extension.
 
-5. Search Coordinator: This module can coordinate the interactions between different content script modules, manage the search process flow, and communicate with other components of the extension, such as the background script and popup page, to trigger actions and update the search results.
+    Responsibilities
+
+    - Injecting UI elements: Dynamically injecting UI elements, such as search results panels, highlighting elements, and feedback messages, into the web page's DOM to provide visual feedback to the user and facilitate interaction with the search functionality.
+    - Displaying search results: Rendering search results in the injected UI elements, such as displaying matched keywords or phrases, providing context around the matches, and allowing the user to navigate through the results.
+    - Highlighting search matches: Applying highlighting styles or effects to the matched keywords or phrases in the web page's DOM, to visually indicate the locations of the matches to the user and improve search visibility.
+    - Handling UI elements for settings and options: Displaying UI elements, such as settings panels, options menus, or configuration dialogs, for the user to customize the search behavior, adjust search settings, or interact with other features related to the search functionality.
+    - Managing UI interactions: Capturing user interactions, such as clicks, inputs, or gestures, on the injected UI elements and triggering appropriate actions or events, such as updating search results, applying settings changes, or providing feedback, to ensure smooth and responsive user experience.
+    
+    Implementation Details
+
+    - The UI Injector module will be implemented in JavaScript, utilizing DOM manipulation techniques, such as DOM manipulation APIs or libraries (e.g., jQuery), to inject UI elements into the web page's DOM and manage UI interactions. It will also implement styles or effects, such as CSS styles or JavaScript animations, to highlight search matches and provide visual feedback to the user. Additionally, it may also utilize UI frameworks or libraries (e.g., React, Angular) to simplify UI development and management.
+
+    Testing and Validation
+
+    - The UI Injector module will be thoroughly tested for various scenarios, including different types of web pages, search results, highlighting styles, and user interactions. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in injecting UI elements, displaying search results, highlighting search matches, and handling UI interactions accurately. Test cases will cover different types of web pages, search results, highlighting styles, and user interactions to ensure smooth and responsive user experience and proper rendering of UI elements according to search results and user interactions.
+
+
+    | Responsibility | APIs, Frameworks, and Libraries |
+    | --- | --- |
+    | Inject UI elements into the web page's DOM | JQuery, React, Angular, Vue, etc. |
+    | Display search results and highlight search matches | JQuery UI, Bootstrap, Material-UI, etc. |
+    | Provide user feedback | Toastr, SweetAlert2, Noty, etc. |
+    | Handle display of UI elements for settings and options | JQuery UI, Bootstrap, Material-UI, etc. |
+
+5. **Search Coordinator**
+    
+    Responsibilities
+
+    - Content Script Coordination: The Search Coordinator coordinates the interactions between different content script modules, such as the Text Content Capturer, Text Content Processor, and UI Injector, to ensure a smooth search process. It manages the flow of data and commands between these modules, orchestrating their actions to capture text content from the web page, process it, and inject UI elements for displaying search results and user feedback.
+    - Search Process Flow Management: The Search Coordinator manages the overall flow of the search process. It controls the sequence of actions and events required for performing a search, such as capturing text content, processing it, and displaying search results. It ensures that the search process is executed in the correct order and handles any errors or exceptions that may occur during the process.
+    - Communication with Other Components: The Search Coordinator communicates with other components of the extension, such as the background script and popup page, to trigger actions and update the search results. It sends commands and receives responses from these components to coordinate the overall search functionality. For example, it may send a request to the background script to fetch search settings from the options page, or send a message to the popup page to update the search results displayed to the user.
+
+    Implementation Details
+    The Search Coordinator module may utilize the following APIs, frameworks, and libraries to implement its functionality:
+
+    - Chrome Extension APIs: The Chrome extension APIs provide a set of functions and events for interacting with the extension's background script, popup page, and content scripts. These APIs can be used by the Search Coordinator to send and receive messages, trigger actions, and update the search results.
+    - Messaging Libraries: Libraries such as chrome.runtime.sendMessage() and chrome.runtime.onMessage can be used for sending and receiving messages between different components of the extension, including the content scripts and background script. These libraries can facilitate communication between the Search Coordinator and other components.
+    - JavaScript: JavaScript is the programming language used to implement the Search Coordinator module. It provides the necessary functionality for handling events, manipulating the DOM, and coordinating the actions of different content script modules.
+    - Event Handling Libraries: Libraries such as jQuery or addEventListener can be used for handling events in the content scripts. These libraries can help with managing event listeners, handling DOM events, and coordinating the flow of actions in the Search Coordinator module.
+    - Custom APIs, Frameworks, or Libraries: Depending on the specific requirements of the extension, custom APIs, frameworks, or libraries may be utilized to implement the functionality of the Search Coordinator module. These may include any custom communication protocols, libraries for managing the search process flow, or other specialized tools for coordinating interactions between components.
+
+    Note: The specific APIs, frameworks, and libraries used in the Search Coordinator module may vary depending on the implementation details and technologies chosen for the development of the Chrome extension. The above list is provided as an example and is not exhaustive.
+
+    Testing and Validation
+    
+    - The Search Coordinator module should undergo thorough testing and validation to ensure its correctness and robustness. This may include unit testing, integration testing, and end-to-end testing of the module's functionality, as well as validation against the requirements and design specifications of the extension. Additionally, any communication between the Search Coordinator and other components should be tested and validated to ensure proper coordination and synchronization. Proper error handling and exception handling should also be implemented and tested to ensure that the module can handle unexpected scenarios gracefully.
 
 Each content script module should have clear responsibilities and interfaces, and should be designed to be modular, efficient, and maintainable. The modules should work together seamlessly to provide the desired search functionality to the user, while minimizing impact on the performance and usability of the web page.
