@@ -137,7 +137,8 @@ The UI Injector module is responsible for injecting user interface (UI) elements
     - The UI Injector module will be thoroughly tested for various scenarios, including different types of web pages, search results, highlighting styles, and user interactions. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in injecting UI elements, displaying search results, highlighting search matches, and handling UI interactions accurately. Test cases will cover different types of web pages, search results, highlighting styles, and user interactions to ensure smooth and responsive user experience and proper rendering of UI elements according to search results and user interactions.
 
 
-5. **Search Coordinator**
+5. **Search Coordinator** 
+The Search Coordinator module is responsible for coordinating the interactions between different content script modules, managing the search process flow, and communicating with other components of the extension, such as the background script and popup page, to trigger actions and update the search results.
     
     Responsibilities
 
