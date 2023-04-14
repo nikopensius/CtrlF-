@@ -135,14 +135,7 @@ The UI Injector module is responsible for injecting user interface (UI) elements
     Testing and Validation
 
     - The UI Injector module will be thoroughly tested for various scenarios, including different types of web pages, search results, highlighting styles, and user interactions. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in injecting UI elements, displaying search results, highlighting search matches, and handling UI interactions accurately. Test cases will cover different types of web pages, search results, highlighting styles, and user interactions to ensure smooth and responsive user experience and proper rendering of UI elements according to search results and user interactions.
-
-
-        | Responsibility | APIs, Frameworks, and Libraries |
-        | --- | --- |
-        | Inject UI elements into the web page's DOM | JQuery, React, Angular, Vue, etc. |
-        | Display search results and highlight search matches | JQuery UI, Bootstrap, Material-UI, etc. |
-        | Provide user feedback | Toastr, SweetAlert2, Noty, etc. |
-        | Handle display of UI elements for settings and options | JQuery UI, Bootstrap, Material-UI, etc. |
+    
 
 5. **Search Coordinator**
     
