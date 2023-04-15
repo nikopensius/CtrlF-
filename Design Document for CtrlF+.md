@@ -204,7 +204,7 @@ The Search Process Flow Module is responsible for managing the overall flow of t
     - Parsing and processing: The Search Process Flow Module processes the search results returned by content scripts or search engine APIs to extract relevant information, such as matching text snippets or URLs, and stores them for further use.
 
     Testing and Validation:
-    
+
     - Unit testing: This module should be thoroughly tested using unit testing techniques to ensure its correctness and robustness. Unit tests should cover different scenarios, such as different types of user input, various search result formats, and error cases.
     - Integration testing: Integration testing should be performed to validate the coordination and communication between the Search Process Flow Module and other components, such as content scripts and the background script. This should include testing message passing, event handling, and UI updates.
     - User testing: The Search Process Flow Module should also be tested from a user perspective to ensure that the search process flow is smooth, efficient, and provides the expected results. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
