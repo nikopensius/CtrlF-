@@ -191,20 +191,17 @@ The Coordination with Content Scripts module in the background script is respons
 The Search Process Flow Module is responsible for managing the overall flow of the search process within the extension. It orchestrates the different stages of the search process, including triggering searches, handling search results, and updating the user interface (UI) accordingly.
 
     Responsibilities:
-        
     - Monitoring user input: This module constantly monitors user input, such as text input in the search box or changes in the search settings.
     - Triggering searches: Based on the user input, the Search Process Flow Module triggers searches by sending appropriate requests to the search engine or content scripts.
     - Handling search results: Once search results are returned, this module processes and parses the results to extract relevant information, such as matching text snippets or search result URLs.
     - Updating UI: The Search Process Flow Module is responsible for updating the user interface (UI) to reflect the latest search results. This includes displaying search results in the UI, updating search result counts, and highlighting matched text in the search results.
 
     Implementation Details:
-
     - Message passing: The Search Process Flow Module communicates with other components of the extension, such as content scripts and the background script, using message passing mechanisms provided by the extension framework. It sends and receives messages to trigger searches, receive search results, and update the UI.
     - Event handling: This module listens for relevant events, such as user input events or search result events, and responds accordingly by triggering appropriate actions.
     - Parsing and processing: The Search Process Flow Module processes the search results returned by content scripts or search engine APIs to extract relevant information, such as matching text snippets or URLs, and stores them for further use.
 
     Testing and Validation:
-
     - Unit testing: This module should be thoroughly tested using unit testing techniques to ensure its correctness and robustness. Unit tests should cover different scenarios, such as different types of user input, various search result formats, and error cases.
     - Integration testing: Integration testing should be performed to validate the coordination and communication between the Search Process Flow Module and other components, such as content scripts and the background script. This should include testing message passing, event handling, and UI updates.
     - User testing: The Search Process Flow Module should also be tested from a user perspective to ensure that the search process flow is smooth, efficient, and provides the expected results. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
