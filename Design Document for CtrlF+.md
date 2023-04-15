@@ -288,7 +288,6 @@ The Event Monitoring Module is responsible for monitoring events and triggers fr
 Each of these modules works together to ensure smooth operation and coordination of different components in the background script of the CtrlF+ extension, providing reliable and efficient search functionality for users.
 
 ### Popup Page Component:
-
 The Popup Page Component is responsible for displaying the graphical user interface (GUI) of the extension, which appears as a popup window when the extension's icon is clicked by the user. It provides a user-friendly interface for interacting with the extension, displaying search results, settings, or other relevant information.
 
 Responsibilities:
