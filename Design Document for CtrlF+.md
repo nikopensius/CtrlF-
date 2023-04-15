@@ -190,7 +190,7 @@ The Coordination with Content Scripts module in the background script is respons
 
 The Search Process Flow Module is responsible for managing the overall flow of the search process within the extension. It orchestrates the different stages of the search process, including triggering searches, handling search results, and updating the user interface (UI) accordingly.
 
-    Responsibilities:
+Responsibilities:
 
     - Monitoring user input: This module constantly monitors user input, such as text input in the search box or changes in the search settings.
     - Triggering searches: Based on the user input, the Search Process Flow Module triggers searches by sending appropriate requests to the search engine or content scripts.
