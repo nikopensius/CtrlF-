@@ -341,8 +341,24 @@ The Settings Page Component is a graphical user interface (GUI) component that p
     - User testing: The Settings Page Component should be tested from a user perspective to ensure that the UI is intuitive, visually appealing, and provides the expected functionality for configuring settings and preferences. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
 
 ## Component Communication
+The "CtrlF+" extension utilizes a Publish-Subscribe/Event-Driven architecture for efficient and loosely coupled communication between its components. This architecture is justified based on the following reasons:
 
-In this section, you would describe how the different components of your extension interact with each other, including how they communicate, share data, and coordinate their actions. This section helps to provide a high-level overview of the flow of information and actions between the components, and how they work together to achieve the desired functionality of the extension.
+- Speed: The "CtrlF+" extension aims to provide fast search functionality for web pages. By using a Publish-Subscribe/Event-Driven architecture, the extension can quickly capture user interactions, such as the "CtrlF+" shortcut or search button clicks, and publish events or messages to notify relevant components of the search query. This allows for fast and asynchronous communication, minimizing delays and ensuring a smooth user experience.
+
+- Ease of Implementation: The Publish-Subscribe/Event-Driven architecture is easy to implement, making it suitable for novice web developers. Components can be designed to be modular and decoupled, with clear event-driven patterns for communication. This makes it straightforward for developers to understand, implement, and maintain the communication logic between components.
+
+- Robustness: Errors or exceptions that may occur during the search process, such as parsing errors or search query processing errors, can be handled in a centralized UI Update Component. This ensures robustness and graceful error handling, preventing crashes or unexpected behaviors in the extension.
+
+- Loose Coupling: The Publish-Subscribe/Event-Driven architecture promotes loose coupling between components, allowing them to operate independently and be easily replaced or extended without impacting other components. This makes the extension flexible and scalable, accommodating potential future changes or enhancements.
+
+Component Interaction flow using Publish-Subscribe/Event-Driven Model:
+
+1. The UI component captures user interactions, such as the "CtrlF+" shortcut or search button clicks, and publishes events or messages indicating a search query has been entered.
+2. The Search Indexing Component subscribes to these events or messages, and parses the web page to create an inverse index for fast search operations. Once the indexing is complete, it publishes an event or message indicating that the indexing is done.
+3. The Search Query Processor Component subscribes to the indexing completion event or message, and receives the search query from the UI component. It uses the inverse index to process the search query and retrieve the relevant search results.
+4. The UI Update Component subscribes to the events or messages published by the indexing and query processing components, and updates the UI with the search results or other relevant information. It also handles any errors or exceptions that may occur during the search process and provides appropriate feedback to the user.
+
+This section describes how the different components of the CtrlF+ extension interact with each other, including how they communicate, share data, and coordinate their actions. This section helps to provide a high-level overview of the flow of information and actions between the components, and how they work together to achieve the desired functionality of the extension.
 
 Some common topics to cover in the Component Interaction section include:
 
