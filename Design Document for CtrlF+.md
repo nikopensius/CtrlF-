@@ -17,6 +17,13 @@
         - Background scripts
         - UI Components
     - Component communication
+        - Introduction
+        - Requirements
+        - Chosen Architecture
+        - Benefits
+        - Implementation Details
+        - Testing and Validation
+        - Conclusion
     - Interaction with DOM
 4. Algorithms
     - Search Algorithm
