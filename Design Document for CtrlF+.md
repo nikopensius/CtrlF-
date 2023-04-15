@@ -187,7 +187,6 @@ The Coordination with Content Scripts module in the background script is respons
     - Conducting thorough testing and validation to ensure the robustness and reliability of the Coordination with Content Scripts module and its interaction with other components of the extension.
 
 2. Search Process Flow Module
-
 The Search Process Flow Module is responsible for managing the overall flow of the search process within the extension. It orchestrates the different stages of the search process, including triggering searches, handling search results, and updating the user interface (UI) accordingly.
 
     Responsibilities:
