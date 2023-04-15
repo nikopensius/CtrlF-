@@ -163,7 +163,7 @@ The Search Coordinator module is responsible for coordinating the interactions b
 Each content script module should have clear responsibilities and interfaces, and should be designed to be modular, efficient, and maintainable. The modules should work together seamlessly to provide the desired search functionality to the user, while minimizing impact on the performance and usability of the web page.
 
 
-## Background scripts
+### Background scripts
 Background scripts are responsible for managing different aspects of the background functionality of a Chrome extension. Background script modules for CtrlF+ extension include:
 
 1. **Coordination with Content Scripts Module**
@@ -286,3 +286,26 @@ The Event Monitoring Module is responsible for monitoring events and triggers fr
     - Integration testing: Validates the interaction and coordination of the Event Monitoring Module with other components of the extension during integration testing to ensure smooth functioning of the extension as a whole.
 
 Each of these modules works together to ensure smooth operation and coordination of different components in the background script of the CtrlF+ extension, providing reliable and efficient search functionality for users.
+
+### Popup Page Component:
+
+The Popup Page Component is responsible for displaying the graphical user interface (GUI) of the extension, which appears as a popup window when the extension's icon is clicked by the user. It provides a user-friendly interface for interacting with the extension, displaying search results, settings, or other relevant information.
+
+    Responsibilities:
+
+    - User interface (UI): The Popup Page Component is responsible for designing and rendering the UI of the popup window. This includes creating the layout, designing the visual appearance, and displaying relevant content to the user in a visually appealing and intuitive manner.
+    - User input handling: This component handles user input, such as mouse clicks, button presses, and other interactions, to trigger actions and update the UI accordingly.
+    - Interaction with other components: The Popup Page Component communicates with other components of the extension, such as the Search Process Flow Module and the Inter-component Communication Module, to trigger searches, exchange data, and coordinate actions.
+    - UI updates: The Popup Page Component updates the UI dynamically in response to user input, search results, and other events. This includes displaying search results, updating search settings, and reflecting changes in the UI components based on the extension's state.
+    
+    Implementation Details:
+
+    - HTML, CSS, and JavaScript: The Popup Page Component is implemented using web technologies such as HTML for defining the structure of the popup window, CSS for styling the UI elements, and JavaScript for handling user input, UI updates, and interaction with other components.
+    - Event handling: This component listens for user input events, such as mouse clicks, button presses, and other interactions, and responds accordingly by triggering appropriate actions.
+    - Message passing: The Popup Page Component communicates with other components of the extension, such as the Search Process Flow Module and the Inter-component Communication Module, using message passing mechanisms provided by the extension framework. It sends and receives messages to trigger searches, update UI components, and exchange data.
+    Testing and Validation:
+
+    UI testing: The Popup Page Component should be thoroughly tested for UI correctness, visual appearance, and intuitive user interaction. UI testing techniques such as usability testing, visual inspection, and cross-browser testing should be employed.
+    - Unit testing: JavaScript functions and event handling logic in the Popup Page Component should be tested using unit testing techniques to ensure their correctness and robustness. Unit tests should cover different scenarios, such as different types of user input, various UI updates, and error cases.
+    - Integration testing: Integration testing should be performed to validate the interaction between the Popup Page Component and other components of the extension, such as the Search Process Flow Module and the Inter-component Communication Module. This should include testing message passing, UI updates, and coordination with other components.
+    - User testing: The Popup Page Component should also be tested from a user perspective to ensure that the UI is intuitive, visually appealing, and provides the expected functionality. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
