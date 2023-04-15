@@ -166,14 +166,124 @@ Each content script module should have clear responsibilities and interfaces, an
 ## Background scripts
 Background scripts are responsible for managing different aspects of the background functionality of a Chrome extension. Background script modules for CtrlF+ extension include:
 
-1. Search Coordinator: This module is responsible for coordinating the interactions between different content script modules, managing the search process flow, and communicating with other components of the extension, such as the popup page and UI Injector module, to trigger actions and update the search results.
+1. Coordination with Content Scripts Module
+The Coordination with Content Scripts module in the background script is responsible for managing the coordination and communication between different content script modules and other components of the extension. It serves as an intermediary for communication between content scripts and other components, such as the user interface, storage management, and other background script modules. This module handles messages, events, and triggers from content scripts and triggers appropriate actions in response.
 
-2. Search Settings Manager: This module could be responsible for managing search settings, such as case sensitivity, word boundaries, and search options (e.g., lemmatization, synonym recommendation). It could handle storing and retrieving these settings from storage, as well as providing methods for updating and applying the settings during the search process.
+    Responsibilities
+    - Facilitating communication and coordination among different content script modules and other components of the extension.
+    - Handling messages, events, and triggers from content scripts and processing them appropriately.
+    - Orchestrating actions in response to messages or events from content scripts, such as updating the search results, managing storage, or triggering UI updates.
+    
+    Implementation Details
+    - Utilizing the chrome.runtime or chrome.extension APIs in the background script to send and receive messages between content scripts and other components of the extension.
+    - Setting up event listeners in the background script to listen for events triggered by content scripts.
+    - Implementing logic to process incoming messages or events from content scripts, including data validation, error handling, and triggering appropriate actions.
+    - Coordinating with other background script modules or components of the extension to ensure smooth communication and coordination among different parts of the extension.
+    
+    Testing and Validation
+    - Testing the coordination and communication between content scripts and other components of the extension using unit tests, integration tests, and end-to-end tests.
+    - Validating the correct handling of messages, events, and triggers from content scripts and verifying the expected actions are triggered in response.
+    - Testing error scenarios, such as invalid messages or unexpected events, to ensure proper error handling and graceful degradation of functionality.
+    - Conducting thorough testing and validation to ensure the robustness and reliability of the Coordination with Content Scripts module and its interaction with other components of the extension.
 
-3. Search History Manager: This module could be responsible for managing search history, such as storing previous search queries and results, and providing methods for retrieving and displaying the search history to the user. It could also handle clearing the search history, managing the size of the search history, and implementing search history-related features such as search suggestions based on past search queries.
+2. Search Process Flow Module
 
-4. Error Handler: This module could be responsible for capturing and handling potential errors or exceptions that may occur during the search process. It could implement logging and error reporting mechanisms to help diagnose and resolve issues, as well as providing user-friendly error messages or notifications to the user.
+The Search Process Flow Module is responsible for managing the overall flow of the search process within the extension. It orchestrates the different stages of the search process, including triggering searches, handling search results, and updating the user interface (UI) accordingly.
 
-5. Background Task Manager: This module could be responsible for managing background tasks, such as scheduling periodic tasks for search indexing, updating search results, or handling other background processes related to the search functionality. It could implement appropriate scheduling mechanisms, such as timers or event-based triggers, and handle the coordination and execution of background tasks.
+    Responsibilities:
+    - Monitoring user input: This module constantly monitors user input, such as text input in the search box or changes in the search settings.
+    - Triggering searches: Based on the user input, the Search Process Flow Module triggers searches by sending appropriate requests to the search engine or content scripts.
+    - Handling search results: Once search results are returned, this module processes and parses the results to extract relevant information, such as matching text snippets or search result URLs.
+    - Updating UI: The Search Process Flow Module is responsible for updating the user interface (UI) to reflect the latest search results. This includes displaying search results in the UI, updating search result counts, and highlighting matched text in the search results.
 
-6. Communication Handler: This module could be responsible for handling inter-component communication between different components of the extension, such as content scripts, UI Injector, and Search Coordinator. It could implement message passing mechanisms, such as using the Chrome extension messaging API or other appropriate mechanisms, for sending and receiving messages between components, as well as handling message processing, error handling, and synchronization.
+    Implementation Details:
+    - Message passing: The Search Process Flow Module communicates with other components of the extension, such as content scripts and the background script, using message passing mechanisms provided by the extension framework. It sends and receives messages to trigger searches, receive search results, and update the UI.
+    - Event handling: This module listens for relevant events, such as user input events or search result events, and responds accordingly by triggering appropriate actions.
+    - Parsing and processing: The Search Process Flow Module processes the search results returned by content scripts or search engine APIs to extract relevant information, such as matching text snippets or URLs, and stores them for further use.
+
+    Testing and Validation:
+    - Unit testing: This module should be thoroughly tested using unit testing techniques to ensure its correctness and robustness. Unit tests should cover different scenarios, such as different types of user input, various search result formats, and error cases.
+    - Integration testing: Integration testing should be performed to validate the coordination and communication between the Search Process Flow Module and other components, such as content scripts and the background script. This should include testing message passing, event handling, and UI updates.
+    - User testing: The Search Process Flow Module should also be tested from a user perspective to ensure that the search process flow is smooth, efficient, and provides the expected results. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
+
+
+3. Inter-component Communication Module
+The Inter-component Communication Module is responsible for handling communication between different components of the extension, such as the popup page, settings, and other background script modules. It implements message passing techniques to exchange data and instructions between components, ensuring smooth data flow and action coordination.
+
+    Responsibilities:
+    
+    - Facilitating communication: This module enables communication between different components of the extension by implementing message passing techniques. It provides a way for components to send and receive messages, allowing them to exchange data and instructions.
+    - Coordinating actions: The Inter-component Communication Module ensures that different components of the extension are coordinated in their actions. For example, it may receive a message from a popup page requesting a certain action to be performed, and then relay that message to the appropriate background script module or content script to trigger the action.
+    - Managing data flow: This module handles the flow of data between components, ensuring that data is exchanged efficiently and accurately. It may be responsible for encoding and decoding data, validating data integrity, and ensuring that data is sent and received in the correct format.
+    - Handling errors: The Inter-component Communication Module may also handle errors that may occur during communication, such as message delivery failures or data validation errors. It should provide appropriate error handling mechanisms to handle such situations gracefully and ensure that the extension continues to function correctly.
+    
+    Implementation Details:
+    
+    - Message passing: This module uses message passing mechanisms provided by the extension framework to send and receive messages between components. It may use various message passing techniques, such as chrome.runtime.sendMessage and chrome.runtime.onMessage for communication between background scripts and content scripts, or chrome.extension.sendMessage and chrome.extension.onMessage for communication between other components, such as popup pages and settings.
+    - Data validation: The Inter-component Communication Module may implement data validation mechanisms to ensure that data exchanged between components is valid and in the correct format. This may include checking for data types, data lengths, and data integrity to prevent data corruption or security vulnerabilities.
+    - Error handling: This module should provide appropriate error handling mechanisms to handle errors that may occur during communication, such as message delivery failures or data validation errors. This may include logging errors, displaying error messages to users, and taking corrective actions to recover from errors and maintain the stability and functionality of the extension.
+    
+    Testing and Validation:
+    
+    - Unit testing: This module should be thoroughly tested using unit testing techniques to ensure its correctness and robustness. Unit tests should cover different scenarios, such as sending and receiving messages between different components, handling different types of data, and handling error conditions.
+    - Integration testing: Integration testing should be performed to validate the communication between the Inter-component Communication Module and other components of the extension. This should include testing message passing, data validation, and error handling in different scenarios and configurations.
+    - User testing: The Inter-component Communication Module should also be tested from a user perspective to ensure that the communication between components is seamless and transparent to users. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
+
+4. Storage Management Module
+The Storage Management Module is responsible for managing the storage for the extension, including storing search settings, options, and other relevant data. It ensures persistent storage of user preferences, search history, and other data, and handles storage-related operations, such as reading, writing, and updating data.
+
+    Responsibilities:
+    - Persistent storage: This module ensures that data stored by the extension is persistent, meaning it is stored across different sessions of the extension and remains available even after the extension is closed or the browser is restarted. It is responsible for managing the storage space allocated to the extension and ensuring that data is stored securely and efficiently.
+    - Data storage operations: The Storage Management Module handles various storage-related operations, such as reading, writing, and updating data. It provides methods and APIs to interact with the storage system, allowing other components of the extension to store and retrieve data as needed. It may also implement data validation mechanisms to ensure that data stored in the storage is valid and in the correct format.
+    - Data synchronization: This module may also handle data synchronization between different components of the extension or between different instances of the extension running on different devices or browsers. It ensures that data remains consistent and up-to-date across different parts of the extension and different instances of the extension running on different environments.
+    - Error handling: The Storage Management Module should provide appropriate error handling mechanisms to handle errors that may occur during storage operations, such as storage failures, data corruption, or other storage-related issues. It should ensure that errors are properly logged, reported, and handled, and that data integrity is maintained.
+    
+    Implementation Details:
+    - Storage APIs: This module may use storage APIs provided by the extension framework, such as chrome.storage API for Chrome extensions or browser.storage API for Firefox extensions, to interact with the storage system. These APIs provide methods for reading, writing, and updating data in different types of storage, such as local storage, sync storage, or extension-specific storage.
+    - Data validation: The Storage Management Module may implement data validation mechanisms to ensure that data stored in the storage is valid and in the correct format. This may include checking for data types, data lengths, and data integrity to prevent data corruption or security vulnerabilities.
+    - Data synchronization: If data synchronization is required, this module may implement techniques such as push or pull synchronization, conflict resolution, and data merging to ensure that data remains consistent and up-to-date across different components or instances of the extension.
+    - Encryption and security: The Storage Management Module may implement encryption and other security measures to protect sensitive data stored in the storage. This may include encrypting data before storing it in the storage, implementing access controls to restrict access to stored data, and using secure storage options provided by the extension framework, such as encrypted local storage or sync storage.
+    
+    Testing and Validation:
+    - Unit testing: This module should be thoroughly tested using unit testing techniques to ensure its correctness and robustness. Unit tests should cover different scenarios, such as reading, writing, and updating data, handling different types of data, and handling error conditions.
+    - Integration testing: Integration testing should be performed to validate the interaction between the Storage Management Module and other components of the extension that use the stored data. This should include testing data synchronization, data validation, and error handling in different scenarios and configurations.
+    - User testing: The Storage Management Module should also be tested from a user perspective to ensure that data is stored persistently, and user preferences and other data are properly maintained across different sessions and instances of the extension. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
+
+5. Error Handling Module
+The Error Handling Module is responsible for implementing error handling mechanisms to ensure the robustness and reliability of the search functionality in the extension. It logs errors, handles unexpected scenarios, and provides graceful degradation in case of errors, preventing crashes or unexpected behavior.
+
+    Responsibilities:
+    - Error logging: Logs errors that occur during the execution of the extension, capturing error details for debugging and troubleshooting purposes.
+    - Error handling: Handles errors in a graceful manner, implementing error recovery mechanisms such as retrying failed operations, falling back to default values, or providing user-friendly error messages.
+    - Unexpected scenario handling: Anticipates and handles unexpected scenarios that may occur during the search process or other operations of the extension, ensuring smooth recovery.
+    - Graceful degradation: Ensures that the extension gracefully degrades in case of errors, continuing to function with limited features or reduced capacity.
+    
+    Implementation Details:
+    - Error logging: Uses logging APIs provided by the extension framework or custom logging mechanisms to capture and log errors.
+    - Error recovery: Implements error recovery mechanisms using conditional statements, try-catch blocks, or other error-handling techniques.
+    - Unexpected scenario handling: Implements error handling logic to identify and handle unexpected scenarios in a robust manner.
+    - Graceful degradation: Implements fallback mechanisms such as using default settings, displaying partial results, or disabling certain features.
+    
+    Testing and Validation:
+    - Error simulation: Tests the Error Handling Module by simulating different types of errors to ensure error handling mechanisms are working as expected.
+    - Error recovery testing: Tests the error recovery mechanisms to ensure proper recovery from different types of errors.
+    - Graceful degradation testing: Tests the fallback mechanisms to ensure graceful degradation of the extension in the presence of errors.
+
+6. Event Monitoring Module
+The Event Monitoring Module is responsible for monitoring events and triggers from various sources, such as user interactions, system events, and extension events. It handles events, triggers appropriate actions, and coordinates the flow of information and actions among different components of the extension.
+
+    Responsibilities:
+    - Event monitoring: Monitors events from various sources, including user interactions (e.g., clicks, key presses), system events (e.g., page loads, extension installation), and extension events (e.g., messages from content scripts, background script events).
+    - Event handling: Handles events by triggering appropriate actions or passing the events to relevant components for further processing.
+    - Flow coordination: Coordinates the flow of information and actions among different components of the extension based on the events that are monitored, ensuring proper communication and coordination among components.
+    Implementation Details:
+    - Event listeners: Implements event listeners or event handling mechanisms provided by the extension framework or custom event handling techniques to capture and process events.
+    - Event dispatching: Dispatches events to relevant components or functions based on event types or event data.
+    Flow coordination: Implements logic to determine the appropriate actions to be taken based on the events that are monitored and coordinates the flow of information and actions among different components.
+    
+    Testing and Validation:
+    - Event simulation: Tests the Event Monitoring Module by simulating various types of events to ensure event monitoring and handling mechanisms are working as expected.
+    - Event coordination testing: Tests the flow coordination logic to ensure proper communication and coordination among components based on the events that are monitored.
+    - Integration testing: Validates the interaction and coordination of the Event Monitoring Module with other components of the extension during integration testing to ensure smooth functioning of the extension as a whole.
+    
+Each of these modules works together to ensure smooth operation and coordination of different components in the background script of the CtrlF+ extension, providing reliable and efficient search functionality for users.
