@@ -358,6 +358,24 @@ Component Interaction flow using Publish-Subscribe/Event-Driven Model:
 3. The Search Query Processor Component subscribes to the indexing completion event or message, and receives the search query from the UI component. It uses the inverse index to process the search query and retrieve the relevant search results.
 4. The UI Update Component subscribes to the events or messages published by the indexing and query processing components, and updates the UI with the search results or other relevant information. It also handles any errors or exceptions that may occur during the search process and provides appropriate feedback to the user.
 
+@startuml
+title Component Communication (Publish-Subscribe/Event-Driven Model)
+
+actor "UI Component" as UI
+participant "Search Indexing Component" as Indexing
+participant "Search Query Processor Component" as Processor
+participant "UI Update Component" as UIUpdate
+
+UI -> Indexing: Publish search query event
+Indexing -> Processor: Subscribe to search query event
+Processor -> Indexing: Publish indexing completion event
+Indexing --> Processor: Indexing done event
+Processor -> UIUpdate: Subscribe to indexing completion event
+Processor -> UIUpdate: Publish search results event
+UIUpdate -> UI: Update UI with search results
+@enduml
+
+
 This section describes how the different components of the CtrlF+ extension interact with each other, including how they communicate, share data, and coordinate their actions. This section helps to provide a high-level overview of the flow of information and actions between the components, and how they work together to achieve the desired functionality of the extension.
 
 Some common topics to cover in the Component Interaction section include:
