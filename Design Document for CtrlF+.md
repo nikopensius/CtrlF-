@@ -341,59 +341,50 @@ The Settings Page Component is a graphical user interface (GUI) component that p
     - User testing: The Settings Page Component should be tested from a user perspective to ensure that the UI is intuitive, visually appealing, and provides the expected functionality for configuring settings and preferences. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
 
 ## Component Communication
-The "CtrlF+" extension utilizes a Publish-Subscribe/Event-Driven architecture for efficient and loosely coupled communication between its components. This architecture is justified based on the following reasons:
 
-- Speed: The "CtrlF+" extension aims to provide fast search functionality for web pages. By using a Publish-Subscribe/Event-Driven architecture, the extension can quickly capture user interactions, such as the "CtrlF+" shortcut or search button clicks, and publish events or messages to notify relevant components of the search query. This allows for fast and asynchronous communication, minimizing delays and ensuring a smooth user experience.
+1. Introduction
 
-- Ease of Implementation: The Publish-Subscribe/Event-Driven architecture is easy to implement, making it suitable for novice web developers. Components can be designed to be modular and decoupled, with clear event-driven patterns for communication. This makes it straightforward for developers to understand, implement, and maintain the communication logic between components.
+- Brief overview of the importance of component communication in the CtrlF+ extension
+- Mention of the chosen component communication architecture (Observer pattern + Message Passing pattern)
 
-- Robustness: Errors or exceptions that may occur during the search process, such as parsing errors or search query processing errors, can be handled in a centralized UI Update Component. This ensures robustness and graceful error handling, preventing crashes or unexpected behaviors in the extension.
+2. Requirements
 
-- Loose Coupling: The Publish-Subscribe/Event-Driven architecture promotes loose coupling between components, allowing them to operate independently and be easily replaced or extended without impacting other components. This makes the extension flexible and scalable, accommodating potential future changes or enhancements.
+- List of desired functionalities for component communication in the extension
+- Mention of the need for scalability, decoupling, efficiency, robustness, security, and novice-friendly characteristics
 
-Component Interaction flow using Publish-Subscribe/Event-Driven Model:
+3. Chosen Architecture
 
-1. The UI component captures user interactions, such as the "CtrlF+" shortcut or search button clicks, and publishes events or messages indicating a search query has been entered.
-2. The Search Indexing Component subscribes to these events or messages, and parses the web page to create an inverse index for fast search operations. Once the indexing is complete, it publishes an event or message indicating that the indexing is done.
-3. The Search Query Processor Component subscribes to the indexing completion event or message, and receives the search query from the UI component. It uses the inverse index to process the search query and retrieve the relevant search results.
-4. The UI Update Component subscribes to the events or messages published by the indexing and query processing components, and updates the UI with the search results or other relevant information. It also handles any errors or exceptions that may occur during the search process and provides appropriate feedback to the user.
+- Description of the chosen combination of the Observer pattern and the Message Passing pattern
+- Explanation of how this architecture accomplishes the desired functionalities
 
-@startuml
-title Component Communication (Publish-Subscribe/Event-Driven Model)
+4. Benefits
 
-actor "UI Component" as UI
-participant "Search Indexing Component" as Indexing
-participant "Search Query Processor Component" as Processor
-participant "UI Update Component" as UIUpdate
+- Justification of the chosen architecture based on its advantages, such as scalability, decoupling, efficiency, robustness, security, and novice-friendly characteristics
 
-UI -> Indexing: Publish search query event
-Indexing -> Processor: Subscribe to search query event
-Processor -> Indexing: Publish indexing completion event
-Indexing --> Processor: Indexing done event
-Processor -> UIUpdate: Subscribe to indexing completion event
-Processor -> UIUpdate: Publish search results event
-UIUpdate -> UI: Update UI with search results
-@enduml
+5. Implementation Details
+
+- Explanation of how the Observer pattern is used for event-based communication between components
+- Description of how the Message Passing pattern is used for communication between different extension components, such as background script, content scripts, popup page, and settings page
+- Mention of the use of message passing mechanisms provided by the extension framework for secure communication
+
+6. Testing and Validation
+
+- Discussion on the testing and validation approach for component communication
+- Mention of unit testing, integration testing, and user testing for ensuring the correctness, robustness, and user-friendliness of the component communication functionality
+
+7. Conclusion
+
+- Recap of the chosen component communication architecture and its suitability for the CtrlF+ extension
+- Emphasis on how this architecture enables fast, robust, and intuitive user experience on the client-side without the need for a server-based backend.
 
 
-This section describes how the different components of the CtrlF+ extension interact with each other, including how they communicate, share data, and coordinate their actions. This section helps to provide a high-level overview of the flow of information and actions between the components, and how they work together to achieve the desired functionality of the extension.
 
-Some common topics to cover in the Component Interaction section include:
 
-Inter-component communication: Describe how components communicate with each other. This could include direct function calls, event-based communication, message passing, or any other mechanisms used for exchanging data and commands between components.
 
-Data sharing: Explain how data is shared between components, such as passing data objects, using shared data storage mechanisms, or leveraging APIs or libraries for data exchange.
+Based on the requirements of the CtrlF+ extension, a suitable architecture for component communication would be a combination of the Message Passing Model and Component-Based Communication. This approach can provide a good balance between simplicity, speed, robustness, and ease of use for novice web software developers. Here's how the components could interact:
 
-Control flow: Describe the flow of control and coordination between components. This could include how components initiate actions, respond to events, or interact with each other in a coordinated manner to achieve the overall functionality of the extension.
+Message Passing Model: Components can communicate with each other using messages through the Chrome extension messaging API. For example, the popup page component can send messages to the background script component to request parsing of the web page and creation of the inverse index. The background script can then process the request and send back the results to the popup page component using messages. This approach allows for asynchronous communication and can be fast, as the parsing and indexing can happen in the background while the user interacts with the UI.
 
-Error handling: Explain how errors and exceptions are handled in the component interactions. This could include error reporting, error handling strategies, and fallback mechanisms to ensure graceful degradation of functionality in case of errors.
+Component-Based Communication: Components can define well-defined interfaces for communication between them. For example, the popup page component can define an interface for requesting search results from the parsed web page, and the content script component responsible for parsing the web page can implement this interface and respond to the request. This approach can provide clear separation of concerns and make it easy for novice web software developers to understand and interact with different components.
 
-Synchronization and concurrency: If your extension involves concurrent or parallel processing, describe how components synchronize and coordinate their actions to avoid conflicts or inconsistencies in data and state.
-
-Security considerations: Discuss any security considerations related to component interactions, such as data validation, authentication, authorization, and other security measures to protect against potential security risks.
-
-Error recovery and fault tolerance: Describe any mechanisms or strategies in place for recovering from errors or faults in component interactions, such as retrying failed operations, logging errors, or implementing fault-tolerant measures.
-
-Use cases and scenarios: Provide examples of typical use cases and scenarios that illustrate how the components interact with each other to achieve specific functionality or user workflows.
-
-The Component Interaction section helps to provide a comprehensive overview of how the different components of your extension work together to achieve the desired functionality, and serves as a reference for developers who may be working on different parts of the extension or maintaining the codebase in the future.
+By combining these two approaches, the CtrlF+ extension can achieve fast parsing and indexing of web pages, robust communication between components, and a straightforward and intuitive interaction model for novice web software developers. Additionally, following established design patterns and principles, such as separation of concerns, modularity, and encapsulation, can further enhance the robustness and maintainability of the extension's architecture.
