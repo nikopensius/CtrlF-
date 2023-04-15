@@ -166,7 +166,7 @@ Each content script module should have clear responsibilities and interfaces, an
 ## Background scripts
 Background scripts are responsible for managing different aspects of the background functionality of a Chrome extension. Background script modules for CtrlF+ extension include:
 
-1. Coordination with Content Scripts Module
+1. **Coordination with Content Scripts Module**
 The Coordination with Content Scripts module in the background script is responsible for managing the coordination and communication between different content script modules and other components of the extension. It serves as an intermediary for communication between content scripts and other components, such as the user interface, storage management, and other background script modules. This module handles messages, events, and triggers from content scripts and triggers appropriate actions in response.
 
     Responsibilities
@@ -186,7 +186,7 @@ The Coordination with Content Scripts module in the background script is respons
     - Testing error scenarios, such as invalid messages or unexpected events, to ensure proper error handling and graceful degradation of functionality.
     - Conducting thorough testing and validation to ensure the robustness and reliability of the Coordination with Content Scripts module and its interaction with other components of the extension.
 
-2. Search Process Flow Module
+2. **Search Process Flow Module**
 The Search Process Flow Module is responsible for managing the overall flow of the search process within the extension. It orchestrates the different stages of the search process, including triggering searches, handling search results, and updating the user interface (UI) accordingly.
 
     Responsibilities:
@@ -206,7 +206,7 @@ The Search Process Flow Module is responsible for managing the overall flow of t
     - User testing: The Search Process Flow Module should also be tested from a user perspective to ensure that the search process flow is smooth, efficient, and provides the expected results. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
 
 
-3. Inter-component Communication Module
+3. **Inter-component Communication Module**
 The Inter-component Communication Module is responsible for handling communication between different components of the extension, such as the popup page, settings, and other background script modules. It implements message passing techniques to exchange data and instructions between components, ensuring smooth data flow and action coordination.
 
     Responsibilities:
@@ -228,7 +228,7 @@ The Inter-component Communication Module is responsible for handling communicati
     - Integration testing: Integration testing should be performed to validate the communication between the Inter-component Communication Module and other components of the extension. This should include testing message passing, data validation, and error handling in different scenarios and configurations.
     - User testing: The Inter-component Communication Module should also be tested from a user perspective to ensure that the communication between components is seamless and transparent to users. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
 
-4. Storage Management Module
+4. **Storage Management Module**
 The Storage Management Module is responsible for managing the storage for the extension, including storing search settings, options, and other relevant data. It ensures persistent storage of user preferences, search history, and other data, and handles storage-related operations, such as reading, writing, and updating data.
 
     Responsibilities:
@@ -248,7 +248,7 @@ The Storage Management Module is responsible for managing the storage for the ex
     - Integration testing: Integration testing should be performed to validate the interaction between the Storage Management Module and other components of the extension that use the stored data. This should include testing data synchronization, data validation, and error handling in different scenarios and configurations.
     - User testing: The Storage Management Module should also be tested from a user perspective to ensure that data is stored persistently, and user preferences and other data are properly maintained across different sessions and instances of the extension. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
 
-5. Error Handling Module
+5. **Error Handling Module**
 The Error Handling Module is responsible for implementing error handling mechanisms to ensure the robustness and reliability of the search functionality in the extension. It logs errors, handles unexpected scenarios, and provides graceful degradation in case of errors, preventing crashes or unexpected behavior.
 
     Responsibilities:
@@ -268,7 +268,7 @@ The Error Handling Module is responsible for implementing error handling mechani
     - Error recovery testing: Tests the error recovery mechanisms to ensure proper recovery from different types of errors.
     - Graceful degradation testing: Tests the fallback mechanisms to ensure graceful degradation of the extension in the presence of errors.
 
-6. Event Monitoring Module
+6. **Event Monitoring Module**
 The Event Monitoring Module is responsible for monitoring events and triggers from various sources, such as user interactions, system events, and extension events. It handles events, triggers appropriate actions, and coordinates the flow of information and actions among different components of the extension.
 
     Responsibilities:
