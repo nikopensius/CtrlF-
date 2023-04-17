@@ -12,28 +12,25 @@
 1. Introduction
 2. Overview
 3. Architecture
-    - Components
-        - Content scripts
-        - Background scripts
-        - UI Components
-    - Component communication
-        - Introduction
-        - Requirements
-        - Chosen Architecture
-        - Benefits
-        - Implementation Details
-        - Testing and Validation
-        - Conclusion
-    - Interaction with DOM
-        - Introduction
-        - Overview of DOM Interaction
-        - DOM Manipulation Techniques
-        - Interaction Flow
-        - Error Handling and Exception Handling
-        - Performance Considerations
-        - Security Considerations
-        - Testing and Validation
-        - References
+    - Content scripts
+        1. User Interaction Handler
+        2. Text Content Capturer
+        3. Text Content Processor
+        4. UI Injector
+        5. Search Coordinator
+    - Background scripts
+        1. Coordination with Content Scripts Module
+        2. Search Process Flow Module
+        3. Inter-component Communication Module
+        4. Storage Management Module
+        5. Error Handling Module
+        6. Event Monitoring Module
+    - UI Components
+        1. Popup page Component
+        2. Settings Page Component
+    - Interaction
+        1. Component Interaction
+        2. Interaction with DOM
 4. Algorithms
     - Search Algorithm
     - Indexing Algorithm
@@ -132,7 +129,6 @@ The Text Content Processor module is responsible for processing the captured tex
     Testing and Validation
 
     - The Text Content Processor module will be thoroughly tested for various scenarios, including different types of text content with varying word forms, cases, and search settings. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in processing text content and applying search settings accurately. Test cases will cover different types of word forms, cases, normalization rules, and search settings to ensure accurate processing and customization of search behavior according to user preferences or system configuration.
-
 
 
 
@@ -332,6 +328,7 @@ The Popup Page Component is responsible for displaying the graphical user interf
     - Integration testing: Integration testing should be performed to validate the interaction between the Popup Page Component and other components of the extension, such as the Search Process Flow Module and the Inter-component Communication Module. This should include testing message passing, UI updates, and coordination with other components.
     - User testing: The Popup Page Component should also be tested from a user perspective to ensure that the UI is intuitive, visually appealing, and provides the expected functionality. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
 
+1. **Popup page Component**
 2. **Settings Page Component:**
 The Settings Page Component is a graphical user interface (GUI) component that provides users with the ability to configure settings and preferences of the extension. It allows users to customize various aspects of the extension, such as search settings, user preferences, and other configurable parameters.
 
@@ -356,86 +353,54 @@ The Settings Page Component is a graphical user interface (GUI) component that p
     - Integration testing: Integration testing should be performed to validate the interaction between the Settings Page Component and other components of the extension, such as the Search Process Flow Module and the Inter-component Communication Module. This should include testing data storage and retrieval, UI updates, and coordination with other components.
     - User testing: The Settings Page Component should be tested from a user perspective to ensure that the UI is intuitive, visually appealing, and provides the expected functionality for configuring settings and preferences. User feedback should be collected and incorporated into the validation process to identify and fix any potential issues.
 
-## Component Communication
+## Interaction
 
-1. Introduction
+1. **Component Interaction**
+Component interaction is a critical aspect of the CtrlF+ extension, as it enables different components of the extension to communicate and collaborate effectively. This subsection provides an overview of how components interact with each other, including their responsibilities, implementation details, and testing and validation requirements.
 
-- Brief overview of the importance of component communication in the CtrlF+ extension
-- Mention of the chosen component communication architecture (Observer pattern + Message Passing pattern)
+    Responsibilities:
+    - Component interaction in the CtrlF+ extension involves several key responsibilities:
 
-2. Requirements
+    - Message passing: Components must communicate with each other using a consistent message passing mechanism, including defining and adhering to a well-defined message format, handling incoming messages, and sending messages to other components as needed.
 
-- List of desired functionalities for component communication in the extension
-- Mention of the need for scalability, decoupling, efficiency, robustness, security, and novice-friendly characteristics
+    - State management: Components may need to share and manage state information among themselves, including maintaining shared state variables or data structures, handling updates to shared state, and ensuring that components have access to the most up-to-date and accurate information.
 
-3. Chosen Architecture
+    - Event handling: Components may need to respond to events triggered by other components or external sources, including listening for events, handling event callbacks, and propagating events to other components as necessary.
 
-- Description of the chosen combination of the Observer pattern and the Message Passing pattern
-- Explanation of how this architecture accomplishes the desired functionalities
+    - Error handling: Components need to handle errors that may occur during component interaction, such as unexpected or invalid messages, state conflicts, or other errors. This includes implementing appropriate error handling mechanisms, such as error logging, error recovery, and graceful degradation of functionality.
 
-4. Benefits
+    - Synchronization: Components may need to synchronize their activities to avoid conflicts or race conditions, including coordinating timing, sequencing, or ordering of activities, and ensuring that components do not interfere with each other's operations.
 
-- Justification of the chosen architecture based on its advantages, such as scalability, decoupling, efficiency, robustness, security, and novice-friendly characteristics
+    - Security: Components need to ensure that their interactions are secure and do not compromise the security of the extension or user data. This includes implementing secure communication protocols, validating input messages, and following best practices for security in the context of the extension.
 
-5. Implementation Details
+    Implementation Details:
+    - The implementation of component interaction in the CtrlF+ extension involves a combination of the Observer pattern and the Message Passing pattern. The Observer pattern allows components to subscribe to events and receive notifications when events occur, while the Message Passing pattern enables components to send and receive messages to communicate with each other.
 
-- Explanation of how the Observer pattern is used for event-based communication between components
-- Description of how the Message Passing pattern is used for communication between different extension components, such as background script, content scripts, popup page, and settings page
-- Mention of the use of message passing mechanisms provided by the extension framework for secure communication
+    - The implementation details may vary depending on the specific components involved in the interaction, such as content scripts, background scripts, and UI components. It may include defining and adhering to a well-defined message format, implementing event listeners and handlers, maintaining shared state variables, handling errors, synchronizing activities, and implementing secure communication protocols.
 
-6. Testing and Validation
+    Testing and Validation:
+    - Thorough testing and validation of component interaction is essential to ensure that the components of the CtrlF+ extension work together harmoniously and as expected. This includes developing test cases, conducting unit testing, integration testing, and system testing of component interactions, and validating their correctness, reliability, and security.
 
-- Discussion on the testing and validation approach for component communication
-- Mention of unit testing, integration testing, and user testing for ensuring the correctness, robustness, and user-friendliness of the component communication functionality
+    - By carefully implementing and testing component interaction, the CtrlF+ extension can achieve efficient communication and coordination among different parts of the extension, resulting in a robust and reliable user experience.
 
-7. Conclusion
+2. **Interaction with DOM**
+The CtrlF+ extension interacts with the Document Object Model (DOM) of the web page to perform various tasks, such as identifying and highlighting search results, capturing user input, and manipulating DOM elements. This subsection provides an overview of how the extension interacts with the DOM, including its purpose, methods, and considerations.
 
-- Recap of the chosen component communication architecture and its suitability for the CtrlF+ extension
-- Emphasis on how this architecture enables fast, robust, and intuitive user experience on the client-side without the need for a server-based backend.
+    Responsibilities:
+    - Interaction with the DOM in the CtrlF+ extension involves several key responsibilities:
 
+    - DOM manipulation: The extension needs to interact with the DOM to perform tasks such as finding and highlighting search results, modifying DOM elements, and capturing user input. This includes using DOM APIs and methods to access, modify, and manipulate DOM elements, attributes, and content.
 
-## Interaction with DOM
+    - Event handling: The extension may need to listen for DOM events, such as user input events or changes in DOM elements, to trigger specific actions or update the extension's state. This includes implementing event listeners and handlers to respond to DOM events and propagate events to other parts of the extension as needed.
 
-1. Introduction
+    - Cross-origin considerations: The extension needs to adhere to the security policies and limitations of the web platform, including handling cross-origin restrictions when accessing and manipulating DOM elements of web pages from different origins. This includes using appropriate techniques such as content scripts, message passing, or cross-origin messaging to interact with the DOM in a secure and compliant manner.
 
-- Briefly explain the importance of interacting with the Document Object Model (DOM) in the context of the extension's functionality.
-- Mention any specific challenges or considerations related to DOM interaction.
+    Implementation Details:
+    - The implementation of interaction with the DOM in the CtrlF+ extension involves using JavaScript and DOM APIs to access and manipulate DOM elements. This may include using DOM traversal methods, manipulating element attributes and content, attaching event listeners to DOM elements, and capturing user input from DOM elements such as input fields or buttons.
 
-2. Overview of DOM Interaction
+    - The implementation details may vary depending on the specific tasks and requirements of the extension, such as finding and highlighting search results, capturing user input, or updating DOM elements based on extension state. It may also involve handling cross-origin restrictions and security considerations when interacting with the DOM of web pages from different origins.
 
-- Provide a high-level overview of how the extension interacts with the DOM.
-- Describe the key steps or processes involved in DOM interaction.
+    Testing and Validation:
+    - Thorough testing and validation of interaction with the DOM is crucial to ensure that the extension interacts with the DOM correctly and as expected. This includes developing test cases, conducting unit testing, integration testing, and system testing of DOM interaction functionality, and validating its correctness, reliability, and security.
 
-3. DOM Manipulation Techniques
-
-- List and describe the specific techniques or methods used to manipulate the DOM in the extension.
-- Include relevant JavaScript APIs or libraries used for DOM manipulation.
-
-4. Interaction Flow
-
-- Describe the typical flow of events or interactions between the extension and the DOM.
-- Include any relevant diagrams, flowcharts, or pseudocode to illustrate the interaction flow.
-
-5. Error Handling and Exception Handling
-
-- Discuss the strategies or mechanisms in place for handling errors or exceptions related to DOM interaction.
-- Provide examples of common error scenarios and how they are handled in the extension.
-
-6. Performance Considerations
-
-- Discuss any performance considerations related to DOM interaction, such as potential performance bottlenecks or optimization techniques.
-- Provide recommendations for efficient DOM manipulation in the extension.
-
-7. Security Considerations
-
-- Discuss any security considerations related to DOM interaction, such as potential security risks or best practices for securing DOM manipulation.
-- Provide recommendations for secure DOM interaction in the extension.
-
-8. Testing and Validation
-
-- Describe the testing and validation approach for ensuring correct functionality of DOM interaction in the extension.
-- Mention any specific testing techniques or tools used for DOM interaction testing.
-
-9. References
-
-- Provide references to relevant documentation, APIs, libraries, or other resources related to DOM interaction in the extension
+    - By carefully implementing and testing interaction with the DOM, the CtrlF+ extension can ensure that it interacts seamlessly with the web page's DOM, performs tasks accurately, and provides a smooth user experience.
