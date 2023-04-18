@@ -8,6 +8,7 @@
     - Test the webpage search functionality with different webpages and verify the accuracy of the retrieved information.
 
     - **Tasks**
+
 | Task                                    | Estimated Effort (hours) | Priority |
 |-----------------------------------------|--------------------------|----------|
 | Retrieve DOM of webpage                 | 1                        | High     |
