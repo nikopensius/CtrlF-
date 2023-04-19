@@ -8,8 +8,8 @@
     - Test the webpage search functionality with different webpages and verify the accuracy of the retrieved information.
 
     - **Tasks**
-| Task                                    | Estimated Effort (hours) | Priority |
-|-----------------------------------------|--------------------------|----------|
-| Retrieve DOM of webpage                 | 1                        | High     |
-| Extract text content from DOM           | 1                        | High     |
-| Perform initial text processing tasks   | 2                        | High     |
+| Task                                    | Estimated Effort (hours) | Priority | Status |
+|-----------------------------------------|--------------------------|----------|--------|
+| Retrieve DOM of webpage                 | 1                        | High     | Done   |
+| Extract text content from DOM           | 1                        | High     | TODO   |
+| Perform initial text processing tasks   | 2                        | High     | TODO   |
