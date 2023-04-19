@@ -7,7 +7,7 @@
     - Display the search results in a user-friendly manner, highlighting the relevant content and providing navigation options.
     - Test the webpage search functionality with different webpages and verify the accuracy of the retrieved information.
 
-    - **Tasks**
+    **Tasks**
 
 | Task                                    | Estimated Effort (hours) | Priority | Status |
 |-----------------------------------------|--------------------------|----------|--------|
