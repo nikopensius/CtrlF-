@@ -126,6 +126,8 @@ The Text Content Capturer module is responsible for capturing and extracting tex
     - The Text Content Capturer module will be thoroughly tested for various scenarios, including different types of web pages with varying structures and contents. Unit testing, integration testing, and regression testing will be performed to ensure the proper functioning of the module in capturing and extracting relevant text content from the web page's DOM. Test cases will cover different types of text-containing elements, nested elements, hidden elements, dynamically loaded content, and edge cases to ensure comprehensive capture of all relevant text content.
 
 
+
+
 3. **Text Content Processor**
 The Text Content Processor module is responsible for processing the captured text content from the Text Content Capturer module to perform various tasks, such as tokenization, lemmatization, and normalization. Additionally, this module also handles search settings, such as case sensitivity, word boundaries, and search options, including lemmatization and synonym recommendation. The processed text content will be used for indexing and searching keywords or phrases in the search functionality of the CtrlF+ Extension.
 

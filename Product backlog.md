@@ -48,3 +48,20 @@
      - Provide a way for users to access their search history and easily select a previous search query for re-execution.
      - Allow users to clear their search history if needed.
      - Test the search history functionality with different search queries and verify the history storage and retrieval.
+
+
+| Task                                    | Estimated Effort (hours) | Priority |
+|-----------------------------------------|--------------------------|----------|
+| Retrieve DOM of webpage                 | 1                        | High     |
+| Extract text content from DOM           | 1                        | High     |
+| Perform initial text processing tasks   | 2                        | High     |
+| Build initial index/data structure      | 3                        | High     |
+| Implement TF-IDF scoring algorithm     | 3                        | Medium   |
+| Implement inverse indexing             | 2                        | Medium   |
+| Implement component communication model| 2                        | Medium   |
+| Implement search box UI                | 1                        | Low      |
+| Implement search options UI           | 2                        | Low      |
+| Implement search results display UI    | 2                        | Low      |
+| Implement search result navigation UI | 1                        | Low      |
+| Implement search result count UI      | 1                        | Low      |
+| Implement search history UI           | 1                        | Low      |
