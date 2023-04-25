@@ -1,23 +1,45 @@
 {
-    "manifest_version": 2,
     "name": "CtrlF+",
     "version": "1.0",
-    "description": "Find bar with advanced functionality",
+    "description": "A custom search tool for web pages.",
+    "manifest_version": 2,
     "icons": {
-        "16": "icon16.png",
-        "32": "icon32.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     },
     "browser_action": {
-        "default_icon": "icon16.png",
-        "default_popup": "popup.html",
-        "default_title": "CtrlF+"
+      "default_icon": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+      },
+      "default_title": "CtrlF+",
+      "default_popup": "popup.html"
     },
-    "permissions": [
-        "activeTab"
-    ],
     "background": {
-        "service_worker": "background.js"
-    }
-}
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"],
+        "run_at": "document_idle",
+        "all_frames": true
+      }
+    ],
+    "commands": {
+        "performSearch": {
+          "suggested_key": {
+            "default": "Ctrl+Shift+F",
+            "mac": "MacCtrl+Shift+F"
+          },
+          "description": "Perform the search"
+        }
+    },
+    "permissions": ["activeTab"]
+  }
+  
