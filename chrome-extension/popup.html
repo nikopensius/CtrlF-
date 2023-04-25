@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CtrlF+</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+	<div id="app">
+		<div class="search-box">
+			<input type="text" v-model="query" placeholder="Enter search term...">
+			<button v-on:click="performSearch()">Search</button>
+		</div>
+		<div v-if="results.length > 0">
+			<h3>Search Results:</h3>
+			<ul>
+				<li v-for="result in results">
+					<a v-bind:href="result.url" target="_blank">{{result.title}}</a>
+					<p>{{result.description}}</p>
+				</li>
+			</ul>
+		</div>
+		<div v-else>
+			<p>No results found.</p>
+		</div>
+	</div>
+	<script type="module" src="popup.mjs"></script>
+</body>
+</html>

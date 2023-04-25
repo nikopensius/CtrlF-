@@ -19,16 +19,19 @@
       "default_title": "CtrlF+",
       "default_popup": "popup.html"
     },
+    
     "background": {
-      "scripts": ["background.js"],
-      "persistent": false
+      "scripts": ["background.mjs"],
+      "persistent": false,
+      "type": "module"
     },
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["content.js"],
+        "js": ["content.mjs"],
         "run_at": "document_idle",
-        "all_frames": true
+        "all_frames": true,
+        "type": "module"
       }
     ],
     "commands": {
@@ -40,6 +43,7 @@
           "description": "Perform the search"
         }
     },
-    "permissions": ["activeTab"]
+    "permissions": ["activeTab"],
+    "type": "module"
   }
   
