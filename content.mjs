@@ -1,10 +1,7 @@
 (async () => {
-  const { NlpManager } = await import('node_modules/@nlpjs/nlp');
-  const manager = new NlpManager();
-  // use the manager instance here
+  const Nlp = await import('@nlpjs/nlp');
+  const nlp = new Nlp();
 })();
-
-
 
 const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the', 'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'];
 
@@ -60,7 +57,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Retrieve the DOM text and build the inverted index
     const nlp = window.nlp; // get the NLP library object
     const invertedIndex = getDOMText('p', document, nlp); // pass nlp parameter to the getDOMText function
-
+    console.log("Success")
     console.log('Inverted Index:', invertedIndex);
 
     // Send the inverted index to the background script
