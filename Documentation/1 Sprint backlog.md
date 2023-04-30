@@ -13,4 +13,4 @@
 |-----------------------------------------|--------------------------|----------|--------|
 | Retrieve DOM of webpage                 | 1                        | High     | Done   |
 | Extract text content from DOM           | 1                        | High     | Done   |
-| Perform initial text processing tasks   | 2                        | High     | TODO   |
+| Perform initial text processing tasks   | 2                        | High     | Done   |
