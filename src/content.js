@@ -1,70 +1,46 @@
-(async () => {
-  const nlp = await import('@nlpjs/nlp');
-  const manager = new NlpManager();
-  // use the manager instance here
-})();
-
-
-
 const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the', 'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'];
 
-function processTextContent(text, nlp) {
+function processTextContent(text) {
   text = text.trim();
+  text = text.replace(/[^\w\s]/g, ''); // Remove all non-word and non-space characters
   text = text.replace(/\s+/g, ' ');
   text = text.toLowerCase();
   const words = text.split(' ').filter(word => !STOP_WORDS.includes(word));
-  const lemmas = nlp(words.join(' ')).out('array');
-  const processedText = lemmas.join(' ');
-  return processedText;
-}
-
-function splitTextContentIntoWords(text, nlp) {
-  text = processTextContent(text, nlp);
-  const words = text.split(' ');
   return words;
 }
 
-function getDOMText(selector = 'p', root = document, nlp) {
+
+function getDOMText(selector = 'p', root = document) {
   const elementsToExtract = ["p", "h1", "h2", "h3", "h4", "h5", "h6"];
-  const extractedText = [];
+  const extractedText = {};
 
   elementsToExtract.forEach(elementType => {
     const elements = root.getElementsByTagName(elementType);
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
       const text = element.textContent;
-      const processedText = processTextContent(text, nlp);
+      const words = processTextContent(text);
       const documentId = elementType + '_' + i;
-      extractedText.push({ id: documentId, text: processedText });
+      words.forEach(word => {
+        if (!extractedText[word]) {
+          extractedText[word] = new Set();
+        }
+        extractedText[word].add(documentId);
+      });
     }
   });
 
-  const invertedIndex = {};
-  extractedText.forEach(doc => {
-    const words = splitTextContentIntoWords(doc.text, nlp);
-    words.forEach(word => {
-      if (!invertedIndex[word]) {
-        invertedIndex[word] = new Set();
-      }
-      invertedIndex[word].add(doc.id);
-    });
-  });
-
-  console.log('Inverted Index:', invertedIndex);
-  return invertedIndex;
+  console.log('Inverted Index:', extractedText);
+  return extractedText;
 }
 
 // Listen for the message from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'performSearch') {
-    // Retrieve the DOM text and build the inverted index
-    const nlp = window.nlp; // get the NLP library object
-    const invertedIndex = getDOMText('p', document, nlp); // pass nlp parameter to the getDOMText function
+    const invertedIndex = getDOMText('p', document);
 
     console.log('Inverted Index:', invertedIndex);
 
-    // Send the inverted index to the background script
     sendResponse(invertedIndex);
   }
 });
-
