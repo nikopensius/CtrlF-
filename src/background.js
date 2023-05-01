@@ -7,10 +7,20 @@ chrome.commands.onCommand.addListener(command => {
   if (command === 'performSearch') {
     // Send a message to the content script to inject the find bar
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'injectFindBar' });
+      chrome.tabs.executeScript(
+        tabs[0].id,
+        { file: 'content.js' },
+        () => {
+          chrome.tabs.sendMessage(
+            tabs[0].id,
+            { action: 'injectFindBar' }
+          );
+        }
+      );
     });
   }
 });
+
 
 // Listen for messages from the content script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

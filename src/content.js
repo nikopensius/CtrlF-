@@ -44,3 +44,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse(invertedIndex);
   }
 });
+
+// Listen for messages from the background script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'injectFindBar') {
+    // Inject the find bar into the DOM
+    const findbar = document.createElement('div');
+    findbar.id = 'tfidf-findbar';
+    findbar.innerHTML = `
+      <input type="text" id="tfidf-findbar-input" placeholder="Search for keywords...">
+      <button id="tfidf-findbar-search">Search</button>
+    `;
+    document.body.appendChild(findbar);
+
+    // Send a response back to the background script
+    sendResponse();
+  }
+});
+
