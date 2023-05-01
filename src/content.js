@@ -30,7 +30,9 @@ function getDOMText(selector = 'p', root = document) {
     }
   });
 
-  console.log('Inverted Index:', extractedText);
+  // Send the inverted index to the background script
+  chrome.runtime.sendMessage({ action: 'invertedIndex', payload: extractedText });
+
   return extractedText;
 }
 

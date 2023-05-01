@@ -1,32 +1,36 @@
-// Initialize variables to hold the inverted index and keyword scores
-let invertedIndex = null;
-let keywordScores = {};
-
 // Listen for the keyboard shortcut
 chrome.commands.onCommand.addListener(command => {
   if (command === 'performSearch') {
     // Send a message to the content script to inject the find bar
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: 'performSearch' }
+      );
       chrome.tabs.executeScript(
         tabs[0].id,
-        { file: 'content.js' },
+        { 
+          code: 'console.log("Injected find bar");',
+          allFrames: true,
+          matchAboutBlank: true
+        },
         () => {
           chrome.tabs.sendMessage(
             tabs[0].id,
             { action: 'injectFindBar' }
           );
         }
-      );
+      );      
     });
   }
 });
-
 
 // Listen for messages from the content script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'invertedIndex') {
     // Store the inverted index
     invertedIndex = message.payload;
+    console.log('Received inverted index:', invertedIndex);
   } else if (message.action === 'updateKeywordScores') {
     // Update the keyword scores with the new search query
     const query = message.payload;
@@ -45,6 +49,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         keywordScores[document] += tf * idf;
       }
     }
+    console.log('Updated keyword scores:', keywordScores);
     sendResponse();
   } else if (message.action === 'getHighestScoringParagraphs') {
     // Get the top N paragraphs with the highest TF-IDF scores
