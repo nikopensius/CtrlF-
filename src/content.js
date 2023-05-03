@@ -51,7 +51,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 function handleFindButtonClick(findInput) {
   const searchString = findInput.value.trim();
   console.log('User entered search string:', searchString);
-  // TODO: Perform search using the search string
+  // Remove non-word characters, split input into array of words
+  const searchArray = processTextContent(searchString)
+  console.log('User input processed to array:', searchArray);
 }
 
 // Listen for messages from the background script
@@ -83,4 +85,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse();
   }
 });
-//hello
