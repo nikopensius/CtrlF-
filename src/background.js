@@ -29,7 +29,7 @@ chrome.commands.onCommand.addListener(command => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'invertedIndex') {
     // Store the inverted index
-    invertedIndex = message.payload;
+    const invertedIndex = message.payload;
     console.log('Received inverted index:', invertedIndex);
   } else if (message.action === 'updateKeywordScores') {
     // Update the keyword scores with the new search query
@@ -56,6 +56,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const numParagraphs = message.payload.numParagraphs;
     const paragraphIds = Object.keys(keywordScores).sort((a, b) => keywordScores[b] - keywordScores[a]).slice(0, numParagraphs);
     sendResponse(paragraphIds);
+  } else if (message.action === 'userQuery') {
+    // find paragraphs that contain user query keywords
+    const searchArray = message.payload
+    console.log("Received query words:", searchArray)
   }
   return true;
 });

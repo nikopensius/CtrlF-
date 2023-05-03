@@ -54,6 +54,8 @@ function handleFindButtonClick(findInput) {
   // Remove non-word characters, split input into array of words
   const searchArray = processTextContent(searchString)
   console.log('User input processed to array:', searchArray);
+  // Send message to background script with user query
+  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray});
 }
 
 // Listen for messages from the background script
