@@ -23,9 +23,9 @@ function getDOMText(selector = 'p', root = document) {
       const documentId = elementType + '_' + i;
       words.forEach(word => {
         if (!extractedText[word]) {
-          extractedText[word] = new Set();
+          extractedText[word] = [];
         }
-        extractedText[word].add(documentId);
+        extractedText[word].push(documentId);
       });
     }
   });
