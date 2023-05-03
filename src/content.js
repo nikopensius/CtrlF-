@@ -76,10 +76,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const findButton = document.getElementById('tfidf-findbar-search');
     const findInput = document.getElementById('tfidf-findbar-input');
 
-    // Add event listener to the find button
+    // Add event listener to the find button (if the user clicks on find)
     findButton.addEventListener('click', function() {
       handleFindButtonClick(findInput);
     });
+    // Add event listener to the find input (if the user presses Enter)
+    findInput.addEventListener('keypress', function(e) {
+      if (e.key === "Enter") {
+        handleFindButtonClick(findInput);
+      }
+    });
+    
 
     // Send a response back to the background script
     sendResponse();
