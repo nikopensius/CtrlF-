@@ -3,23 +3,23 @@ function intersection (keywords, invertedIndex) {
   var result = new Set (); // or a hash map
   var first = true; // flag to indicate the first keyword
   for (var keyword of keywords) {
-    var postings = invertedIndex [keyword]; // get the list of (paragraph_id, score) pairs
-    if (postings) {
+    var paragraph_ids = invertedIndex [keyword]; // get the list of paragraph_ids
+    if (paragraph_ids) {
       if (first) { // if this is the first keyword, add all the paragraphs to the result
-        for (var posting of postings) {
-          result.add (posting [0]); // add the paragraph_id to the result
+          for (var paragraph_id of paragraph_ids) {
+          result.add (paragraph_id); // add the paragraph_id to the result
         }
         first = false; // set the flag to false
       } else { // if this is not the first keyword, intersect with the previous result
         var temp = new Set (); // create a temporary set
-        for (var posting of postings) {
-          if (result.has (posting [0])) { // if the paragraph_id is already in the result
-            temp.add (posting [0]); // add it to the temporary set
+        for (var paragraph_id of paragraph_ids) {
+          if (result.has (paragraph_id)) { // if the paragraph_id is already in the result
+            temp.add (paragraph_id); // add it to the temporary set
           }
         }
         result = temp; // update the result with the temporary set
       }
-    } else { // if there is no posting for this keyword, return an empty result
+    } else { // if there is no paragraph for this keyword, return an empty result
       return [];
     }
   }
@@ -88,7 +88,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // find paragraphs that contain user query keywords
     const searchArray = message.payload
     console.log("Received query words:", searchArray)
-    console.log(intersection(searchArray, invertedIndex))
+    var paragraph_ids = intersection(searchArray, invertedIndex);
+    sendResponse(paragraph_ids);
   }
   return true;
 });

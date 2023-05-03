@@ -55,7 +55,10 @@ function handleFindButtonClick(findInput) {
   const searchArray = processTextContent(searchString)
   console.log('User input processed to array:', searchArray);
   // Send message to background script with user query
-  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray});
+  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray}, function (response) {
+    console.log(response);
+    
+  });
 }
 
 // Listen for messages from the background script
