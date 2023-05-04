@@ -13,6 +13,7 @@ function processTextContent(text) {
 function getDOMText(selector = 'p', root = document) {
   const elementsToExtract = ["p", "h1", "h2", "h3", "h4", "h5", "h6"];
   const extractedText = {};
+  const paragraphs = [];
 
   elementsToExtract.forEach(elementType => {
     const elements = root.getElementsByTagName(elementType);
@@ -21,6 +22,11 @@ function getDOMText(selector = 'p', root = document) {
       const text = element.textContent;
       const words = processTextContent(text);
       const documentId = elementType + '_' + i;
+      const paragraphText = {
+        id: documentId,
+        text: text
+      }
+      paragraphs.push(paragraphText)
       words.forEach(word => {
         if (!extractedText[word]) {
           extractedText[word] = [];
@@ -33,15 +39,21 @@ function getDOMText(selector = 'p', root = document) {
   // Send the inverted index to the background script
   chrome.runtime.sendMessage({ action: 'invertedIndex', payload: extractedText });
 
-  return extractedText;
+  return { extractedText, paragraphs };
 }
+
+let paragraphs_and_ids = []
 
 // Listen for the message from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'performSearch') {
-    const invertedIndex = getDOMText('p', document);
+    const results = getDOMText('p', document);
+
+    const invertedIndex = results.extractedText;
+    paragraphs_and_ids = results.paragraphs;
 
     console.log('Inverted Index:', invertedIndex);
+    console.log('Paragraphs:', paragraphs_and_ids);
 
     sendResponse(invertedIndex);
   }
@@ -57,9 +69,39 @@ function handleFindButtonClick(findInput) {
   // Send message to background script with user query
   chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray}, function (response) {
     console.log(response);
-    
+    const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response)
+    highlightParagraphs(paragraphsToHighlight)
   });
+
 }
+
+function filterParagraphs(paragraphs, idsToHighlight) {
+  const paragraphsToHighlight = paragraphs.filter(paragraph => idsToHighlight.includes(paragraph.id));
+  console.log('Paragraphs to highlight:', paragraphsToHighlight);
+  return paragraphsToHighlight;
+}
+
+
+
+function highlightParagraphs(paragraphs_to_highlight) {
+  // Get all paragraphs in the document
+  const paragraphs = document.getElementsByTagName('p');
+
+  // Loop through each paragraph
+  for (let i = 0; i < paragraphs.length; i++) {
+    const paragraph = paragraphs[i];
+
+    // Check if the paragraph's text content matches any of the paragraphs to highlight
+    if (paragraphs_to_highlight.includes(paragraph.textContent)) {
+      // Wrap the paragraph in a span element with a highlight class
+      const span = document.createElement('span');
+      span.className = 'highlight';
+      span.textContent = paragraph.textContent;
+      paragraph.parentNode.replaceChild(span, paragraph);
+    }
+  }
+}
+
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
