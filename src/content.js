@@ -70,36 +70,34 @@ function handleFindButtonClick(findInput) {
   chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray}, function (response) {
     console.log(response);
     const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response)
-    highlightParagraphs(paragraphsToHighlight)
+    highlightText(paragraphsToHighlight)
   });
 
 }
 
 function filterParagraphs(paragraphs, idsToHighlight) {
-  const paragraphsToHighlight = paragraphs.filter(paragraph => idsToHighlight.includes(paragraph.id));
-  console.log('Paragraphs to highlight:', paragraphsToHighlight);
-  return paragraphsToHighlight;
+  const textToHighlight = [];
+
+  for (let i = 0; i < paragraphs.length; i++) {
+    const paragraph = paragraphs[i];
+    if (idsToHighlight.includes(paragraph.id)) {
+      textToHighlight.push(paragraph.text);
+    }
+  }
+
+  console.log('Text to highlight:', textToHighlight);
+  return textToHighlight;
 }
 
 
-
-function highlightParagraphs(paragraphs_to_highlight) {
-  // Get all paragraphs in the document
-  const paragraphs = document.getElementsByTagName('p');
-
-  // Loop through each paragraph
-  for (let i = 0; i < paragraphs.length; i++) {
-    const paragraph = paragraphs[i];
-
-    // Check if the paragraph's text content matches any of the paragraphs to highlight
-    if (paragraphs_to_highlight.includes(paragraph.textContent)) {
-      // Wrap the paragraph in a span element with a highlight class
-      const span = document.createElement('span');
-      span.className = 'highlight';
-      span.textContent = paragraph.textContent;
-      paragraph.parentNode.replaceChild(span, paragraph);
-    }
-  }
+function highlightText(textToHighlight) {
+  let body = document.querySelector('body');
+  let text = body.innerHTML;
+  textToHighlight.forEach(str => {
+    let regex = new RegExp(`\\b${str}\\b`, 'gi');
+    text = text.replace(regex, `<mark>${str}</mark>`);
+  });
+  body.innerHTML = text;
 }
 
 
