@@ -16,11 +16,11 @@ function getDOMText(selector = 'p', root = document) {
   const paragraphs = [];
 
   elementsToExtract.forEach(elementType => {
-    const elements = root.getElementsByTagName(elementType);
+    const elements = root.querySelectorAll(elementType);
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
       const html = element.outerHTML;
-      const text = html.replace(/<[^>]+>/g, '');
+      const text = element.innerText;
       const words = processTextContent(text);
       const documentId = elementType + '_' + i;
       const paragraphText = {
@@ -42,6 +42,8 @@ function getDOMText(selector = 'p', root = document) {
 
   return { extractedText, paragraphs };
 }
+
+
 
 
 let paragraphs_and_ids = []
@@ -98,7 +100,7 @@ function highlightText(paragraphsToHighlight) {
   paragraphsToHighlight.forEach(paragraph => {
     console.log(paragraph)
     //const regex = new RegExp(`\\b${paragraph}\\b`, 'gi');
-    const regex = new RegExp(`${paragraph}`, 'i');
+  const regex = new RegExp(`${paragraph}`, 'i');
 
     html = html.replace(regex, `<mark>${paragraph}</mark>`);
   });
