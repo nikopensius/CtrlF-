@@ -14,20 +14,20 @@ function getDOMText(selector = 'p', root = document) {
   const elementsToExtract = ["p", "h1", "h2", "h3", "h4", "h5", "h6"];
   const extractedText = {};
   const paragraphs = [];
+  const html = document.querySelector('body').innerHTML;
 
   elementsToExtract.forEach(elementType => {
-    const elements = root.querySelectorAll(elementType);
-    for (let i = 0; i < elements.length; i++) {
-      const element = elements[i];
-      const html = element.outerHTML;
-      const text = element.innerText;
+    const regex = new RegExp(`<${elementType}[^>]*>(.*?)<\/${elementType}>`, 'g');
+    let match;
+    while ((match = regex.exec(html)) !== null) {
+      const text = match[1].replace(/<[^>]+>/g, '');
       const words = processTextContent(text);
-      const documentId = elementType + '_' + i;
+      const documentId = elementType + '_' + paragraphs.length;
       const paragraphText = {
         id: documentId,
-        text: html
+        text: match[0]
       }
-      paragraphs.push(paragraphText)
+      paragraphs.push(paragraphText);
       words.forEach(word => {
         if (!extractedText[word]) {
           extractedText[word] = [];
@@ -42,6 +42,7 @@ function getDOMText(selector = 'p', root = document) {
 
   return { extractedText, paragraphs };
 }
+
 
 
 
@@ -98,8 +99,7 @@ function highlightText(paragraphsToHighlight) {
   const body = document.querySelector('body');
   let html = body.innerHTML;
   paragraphsToHighlight.forEach(paragraph => {
-    console.log(paragraph)
-    //const regex = new RegExp(`\\b${paragraph}\\b`, 'gi');
+  //const regex = new RegExp(`\\b${paragraph}\\b`, 'gi');
   const regex = new RegExp(`${paragraph}`, 'i');
 
     html = html.replace(regex, `<mark>${paragraph}</mark>`);
