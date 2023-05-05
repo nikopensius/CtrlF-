@@ -17,7 +17,7 @@ function getDOMText(selector = 'p', root = document) {
   const html = document.querySelector('body').innerHTML;
 
   elementsToExtract.forEach(elementType => {
-    const regex = new RegExp(`<${elementType}[^>]*>(.*?)<\/${elementType}>`, 'g');
+    const regex = new RegExp(`<${elementType}[^>]*>(.*?)<\/${elementType}>`, 'gs');
     let match;
     while ((match = regex.exec(html)) !== null) {
       const text = match[1].replace(/<[^>]+>/g, '');
@@ -99,9 +99,7 @@ function highlightText(paragraphsToHighlight) {
   const body = document.querySelector('body');
   let html = body.innerHTML;
   paragraphsToHighlight.forEach(paragraph => {
-  //const regex = new RegExp(`\\b${paragraph}\\b`, 'gi');
-  const regex = new RegExp(`${paragraph}`, 'i');
-
+    const regex = new RegExp(`${paragraph}`, 'gi');
     html = html.replace(regex, `<mark>${paragraph}</mark>`);
   });
   body.innerHTML = html;
