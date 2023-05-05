@@ -19,12 +19,13 @@ function getDOMText(selector = 'p', root = document) {
     const elements = root.getElementsByTagName(elementType);
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
-      const text = element.textContent;
+      const html = element.outerHTML;
+      const text = html.replace(/<[^>]+>/g, '');
       const words = processTextContent(text);
       const documentId = elementType + '_' + i;
       const paragraphText = {
         id: documentId,
-        text: text
+        text: html
       }
       paragraphs.push(paragraphText)
       words.forEach(word => {
@@ -41,6 +42,7 @@ function getDOMText(selector = 'p', root = document) {
 
   return { extractedText, paragraphs };
 }
+
 
 let paragraphs_and_ids = []
 
@@ -90,15 +92,20 @@ function filterParagraphs(paragraphs, idsToHighlight) {
 }
 
 
-function highlightText(textToHighlight) {
-  let body = document.querySelector('body');
-  let text = body.innerHTML;
-  textToHighlight.forEach(str => {
-    let regex = new RegExp(`\\b${str}\\b`, 'gi');
-    text = text.replace(regex, `<mark>${str}</mark>`);
+function highlightText(paragraphsToHighlight) {
+  const body = document.querySelector('body');
+  let html = body.innerHTML;
+  paragraphsToHighlight.forEach(paragraph => {
+    console.log(paragraph)
+    //const regex = new RegExp(`\\b${paragraph}\\b`, 'gi');
+    const regex = new RegExp(`${paragraph}`, 'i');
+
+    html = html.replace(regex, `<mark>${paragraph}</mark>`);
   });
-  body.innerHTML = text;
+  body.innerHTML = html;
 }
+
+
 
 
 // Listen for messages from the background script
