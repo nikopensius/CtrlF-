@@ -25,7 +25,7 @@ function getDOMText(selector = 'p', root = document) {
       const documentId = elementType + '_' + paragraphs.length;
       const paragraphText = {
         id: documentId,
-        text: match[0]
+        text: match[1]
       }
       paragraphs.push(paragraphText);
       words.forEach(word => {
@@ -89,21 +89,38 @@ function filterParagraphs(paragraphs, idsToHighlight) {
       textToHighlight.push(paragraph.text);
     }
   }
-
-  console.log('Text to highlight:', textToHighlight);
   return textToHighlight;
 }
 
 
 function highlightText(paragraphsToHighlight) {
+  // Create a <style> element
+  var styleElement = document.createElement('style');
+
+  // Set the CSS rule
+  var cssRule = '.highlight { background-color: yellow; }';
+
+  // Add the CSS rule to the <style> element
+  styleElement.appendChild(document.createTextNode(cssRule));
+
+  // Append the <style> element to the <head> section
+  document.head.appendChild(styleElement);
+
   const body = document.querySelector('body');
   let html = body.innerHTML;
   paragraphsToHighlight.forEach(paragraph => {
-    const regex = new RegExp(`${paragraph}`, 'gi');
-    html = html.replace(regex, `<mark>${paragraph}</mark>`);
+    const regex = new RegExp(escapeRegExp(paragraph), 'gi');
+    html = html.replace(regex, `<span class="highlight">${paragraph}</span>`);
   });
   body.innerHTML = html;
+  console.log("Changed HTML:", html);
 }
+
+// Function to escape special characters in a string for use in a regular expression
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 
 
 
@@ -119,9 +136,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const findbar = document.createElement('div');
     findbar.id = 'tfidf-findbar';
     findbar.innerHTML = `
+    <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f5f5f5; padding: 10px;">
       <input type="text" id="tfidf-findbar-input" placeholder="Search for keywords...">
       <button id="tfidf-findbar-search">Find</button>
-    `;
+    </div>
+  `;  
     document.body.appendChild(findbar);
 
     // Get the find button and text input elements
