@@ -57,28 +57,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const invertedIndex = results.extractedText;
     paragraphs_and_ids = results.paragraphs;
 
-    console.log('Inverted Index:', invertedIndex);
-    console.log('Paragraphs:', paragraphs_and_ids);
-
     sendResponse(invertedIndex);
   }
 });
-
-// Define the function that handles the click event outside of the injectFindBar listener
-function handleFindButtonClick(findInput) {
-  const searchString = findInput.value.trim();
-  console.log('User entered search string:', searchString);
-  // Remove non-word characters, split input into array of words
-  const searchArray = processTextContent(searchString)
-  console.log('User input processed to array:', searchArray);
-  // Send message to background script with user query
-  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray}, function (response) {
-    console.log(response);
-    const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response)
-    highlightText(paragraphsToHighlight)
-  });
-
-}
 
 function filterParagraphs(paragraphs, idsToHighlight) {
   const textToHighlight = [];
@@ -113,7 +94,6 @@ function highlightText(paragraphsToHighlight) {
     html = html.replace(regex, `<span class="highlight">${paragraph}</span>`);
   });
   body.innerHTML = html;
-  console.log("Changed HTML:", html);
 }
 
 // Function to escape special characters in a string for use in a regular expression
@@ -123,7 +103,21 @@ function escapeRegExp(string) {
 
 
 
+// Define the function that handles the click event outside of the injectFindBar listener
+function handleFindButtonClick(findInput) {
+  const searchString = findInput.value.trim();
+  console.log('User entered search string:', searchString);
+  // Remove non-word characters, split input into array of words
+  const searchArray = processTextContent(searchString)
+  console.log('User input processed to array:', searchArray);
+  // Send message to background script with user query
+  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray}, function (response) {
+    console.log(response);
+    const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response)
+    highlightText(paragraphsToHighlight)
+  });
 
+}
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
