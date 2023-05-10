@@ -12,5 +12,5 @@
 | Task                                    | Estimated Effort (hours) | Priority | Status |
 |-----------------------------------------|--------------------------|----------|--------|
 | Build initial index/data structure      | 3                        | High     | Done   |
-| Implement TF-IDF scoring algorithm      | 3                        | High     | TODO   |
+| Implement TF-IDF scoring algorithm      | 3                        | High     | Postp  |
 | Implement inverse indexing              | 2                        | High     | Done   |
