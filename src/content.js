@@ -89,6 +89,13 @@ function highlightText(paragraphsToHighlight) {
 
   const body = document.querySelector('body');
   let html = body.innerHTML;
+
+  // Remove previous highlighting
+  html = html.replace(/<span class="highlight">/gi, '');
+  html = html.replace(/<\/span>/gi, '');
+
+
+
   paragraphsToHighlight.forEach(paragraph => {
     const regex = new RegExp(escapeRegExp(paragraph), 'gi');
     html = html.replace(regex, `<span class="highlight">${paragraph}</span>`);
@@ -104,8 +111,8 @@ function escapeRegExp(string) {
 
 
 // Define the function that handles the click event outside of the injectFindBar listener
-function handleFindButtonClick(findInput) {
-  
+function handleFindButtonClick() {
+  const findInput = document.getElementById('tfidf-findbar-input');
   const searchString = findInput.value.trim();
   console.log('User entered search string:', searchString);
   // Remove non-word characters, split input into array of words
@@ -120,7 +127,19 @@ function handleFindButtonClick(findInput) {
 
 }
 
+// Listen for click events on the document and delegate to the find button
+document.addEventListener('click', function(event) {
+  if (event.target && event.target.id === 'tfidf-findbar-search') {
+    handleFindButtonClick();
+  }
+});
 
+// Listen for keypress events on the document and delegate to the find input
+document.addEventListener('keypress', function(event) {
+  if (event.target && event.target.id === 'tfidf-findbar-input' && event.key === 'Enter') {
+    handleFindButtonClick();
+  }
+});
 
 // Function to inject the find bar into the DOM
 function injectFindBar() {
@@ -134,36 +153,17 @@ function injectFindBar() {
   findbar.id = 'tfidf-findbar';
   findbar.innerHTML = `
     <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f5f5f5; padding: 10px;">
-      <input type="text" id="tfidf-findbar-input" placeholder="Search for keywords...">
+      <input type="text" id="tfidf-findbar-input" placeholder="Search for keywords..." autofocus>
       <button id="tfidf-findbar-search">Find</button>
     </div>
   `;  
   document.body.appendChild(findbar);
 }
 
-
-// Function to attach the event listeners
-function attachEventListeners() {
-  const findButton = document.getElementById('tfidf-findbar-search');
-  const findInput = document.getElementById('tfidf-findbar-input');
-  
-  // Add event listener to the find button (if the user clicks on find)
-  findButton.addEventListener('click', function() {
-    handleFindButtonClick(findInput);
-  });
-  // Add event listener to the find input (if the user presses Enter)
-  findInput.addEventListener('keypress', function(e) {
-    if (e.key === "Enter") {
-      handleFindButtonClick(findInput);
-    }
-  });
-}
-
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'injectFindBar') {
     injectFindBar();
-    attachEventListeners();
     sendResponse();
   }
 });
