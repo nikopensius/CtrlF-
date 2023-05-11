@@ -127,10 +127,31 @@ function handleFindButtonClick() {
 
 }
 
-// Listen for click events on the document and delegate to the find button
-document.addEventListener('click', function(event) {
-  if (event.target && event.target.id === 'tfidf-findbar-search') {
+// Listen for keypress events on the document and delegate to the find input
+document.addEventListener('keypress', function(event) {
+  if (event.target && event.target.id === 'tfidf-findbar-input' && event.key === 'Enter') {
     handleFindButtonClick();
+  }
+});
+
+// Listen for click events on the document and delegate to the findbar close button
+document.addEventListener('click', function(event) {
+  if (event.target && event.target.id === 'tfidf-findbar-close') {
+    // Remove the findbar from the DOM
+    const findbar = document.getElementById('tfidf-findbar');
+    if (findbar) {
+      findbar.remove();
+    }
+  }
+});
+
+// Event listener for "Esc" key press
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const findbar = document.getElementById('tfidf-findbar');
+    if (findbar && findbar.style.display !== 'none') {
+      findbar.remove();
+    }
   }
 });
 
@@ -140,6 +161,7 @@ document.addEventListener('keypress', function(event) {
     handleFindButtonClick();
   }
 });
+
 
 // Function to inject the find bar into the DOM
 function injectFindBar() {
@@ -152,11 +174,15 @@ function injectFindBar() {
   const findbar = document.createElement('div');
   findbar.id = 'tfidf-findbar';
   findbar.innerHTML = `
-    <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f5f5f5; padding: 10px;">
-      <input type="text" id="tfidf-findbar-input" placeholder="Search for keywords..." autofocus>
-      <button id="tfidf-findbar-search">Find</button>
-    </div>
-  `;  
+  <div style="position: fixed; top: 0; right: 0; width: 300px; padding: 10px; background-color: #fff; border-radius: 10px; border: 1px solid #ccc; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); z-index: 9999;">
+    <input type="text" id="tfidf-findbar-input" placeholder="Insert keywords and hit Enter" autofocus style="border: none; outline: none; width: 60%" autocomplete="off">
+    <button id="tfidf-findbar-close" style="position: absolute; top: 10px; right: 15px; font-weight: bold; border: none; background-color: #fff; cursor: pointer;">X</button>
+  </div>
+  `
+  /*
+
+  */
+  ;  
   document.body.appendChild(findbar);
 }
 
@@ -164,6 +190,8 @@ function injectFindBar() {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'injectFindBar') {
     injectFindBar();
+    // Focus the input field
+    document.getElementById('tfidf-findbar-input').focus();
     sendResponse();
   }
 });
