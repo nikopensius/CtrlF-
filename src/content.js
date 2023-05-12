@@ -74,6 +74,20 @@ function filterParagraphs(paragraphs, idsToHighlight) {
 }
 
 
+//remove any previous highlighting using span element unwrapping
+function removePreviousHighlighting() {
+  const highlightedSpans = document.querySelectorAll('.highlight');
+  highlightedSpans.forEach(span => {
+    const parent = span.parentNode;
+    while (span.firstChild) {
+      parent.insertBefore(span.firstChild, span);
+    }
+    parent.removeChild(span);
+  });
+}
+
+
+
 function highlightText(paragraphsToHighlight) {
   // Create a <style> element
   var styleElement = document.createElement('style');
@@ -86,24 +100,9 @@ function highlightText(paragraphsToHighlight) {
 
   // Append the <style> element to the <head> section
   document.head.appendChild(styleElement);
-
-  /*
-  // Remove previous highlighting
-  html = html.replace(/<span class="highlight">/gi, '');
-  html = html.replace(/<\/span>/gi, '');
-  */ 
   
-  //remove any previous highlighting using span element unwrapping
-  const highlightedSpans = document.querySelectorAll('.highlight');
-  highlightedSpans.forEach(span => {
-    const parent = span.parentNode;
-    while (span.firstChild) {
-      parent.insertBefore(span.firstChild, span);
-    }
-    parent.removeChild(span);
-  });
-  
-    
+  // remove any previous highlighting
+  removePreviousHighlighting();
 
   const body = document.querySelector('body');
   let html = body.innerHTML;
@@ -153,6 +152,7 @@ document.addEventListener('click', function(event) {
     // Remove the findbar from the DOM
     const findbar = document.getElementById('tfidf-findbar');
     if (findbar) {
+      removePreviousHighlighting();
       findbar.remove();
     }
   }
@@ -163,6 +163,7 @@ document.addEventListener('keydown', function(event) {
   if (event.key === 'Escape') {
     const findbar = document.getElementById('tfidf-findbar');
     if (findbar && findbar.style.display !== 'none') {
+      removePreviousHighlighting();
       findbar.remove();
     }
   }
