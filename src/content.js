@@ -87,13 +87,26 @@ function highlightText(paragraphsToHighlight) {
   // Append the <style> element to the <head> section
   document.head.appendChild(styleElement);
 
-  const body = document.querySelector('body');
-  let html = body.innerHTML;
-
+  /*
   // Remove previous highlighting
   html = html.replace(/<span class="highlight">/gi, '');
   html = html.replace(/<\/span>/gi, '');
+  */ 
+  
+  //remove any previous highlighting using span element unwrapping
+  const highlightedSpans = document.querySelectorAll('.highlight');
+  highlightedSpans.forEach(span => {
+    const parent = span.parentNode;
+    while (span.firstChild) {
+      parent.insertBefore(span.firstChild, span);
+    }
+    parent.removeChild(span);
+  });
+  
+    
 
+  const body = document.querySelector('body');
+  let html = body.innerHTML;
 
 
   paragraphsToHighlight.forEach(paragraph => {
