@@ -1,3 +1,17 @@
+// Create a script element
+var script = document.createElement('script');
+// Set the src attribute to the location of the lemmatizer.js file
+script.src = '';
+// Define a callback function to execute after the script is loaded
+script.onload = function() {
+  // The lemmatizer module is now available
+  // You can use its functionality here
+  var lemmatizer = new Lemmatizer();
+  // ...
+};
+// Append the script element to the head or body of the web page
+document.head.appendChild(script);
+
 const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the', 'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'];
 
 function processTextContent(text) {

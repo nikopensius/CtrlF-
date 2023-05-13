@@ -2,9 +2,13 @@
   "dependencies": {
     "@nlpjs/core": "^4.26.1",
     "@nlpjs/nlp": "^4.26.1",
+    "browserify-fs": "^1.0.0",
+    "finnlp": "^1.1.1",
     "natural": "^6.3.0",
     "node-nlp": "^4.26.1",
-    "puppeteer": "^19.11.1"
+    "puppeteer": "^19.11.1",
+    "stream-browserify": "^3.0.0",
+    "underscore": "^1.13.6"
   },
   "devDependencies": {
     "@babel/core": "^7.21.5",
@@ -12,7 +16,10 @@
     "@rollup/plugin-node-resolve": "^15.0.2",
     "babel-loader": "^9.1.2",
     "fs": "^0.0.1-security",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "rollup": "^3.21.0",
+    "util": "^0.12.5",
     "webpack": "^5.81.0",
     "webpack-cli": "^5.0.2"
   },

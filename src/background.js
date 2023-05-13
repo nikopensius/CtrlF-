@@ -1,3 +1,10 @@
+// import
+import * as Fin from "finnlp";
+
+// instantiate new input
+let processed = new Fin.Run("This is a some text");
+console.log(processed);
+
 // function to find paragraphs that contain all keywords
 function intersection (keywords, invertedIndex) {
   var result = new Set (); // or a hash map
@@ -93,3 +100,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   return true;
 });
+
