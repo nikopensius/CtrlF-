@@ -1,3 +1,34 @@
+// portion of code to test communications with Python backend
+
+// Send a request to the server
+function sendRequestToServer(data) {
+  fetch('http://localhost:5000/process', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then(response => response.json())
+    .then(result => {
+      // Handle the response from the server
+      console.log(result);
+      // Perform further actions with the result
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Handle errors
+    });
+}
+
+// Example usage
+const data = {
+  content: 'Lorem ipsum dolor sit amet',
+  query: 'Lorem',
+};
+
+sendRequestToServer(data);
+
 // function to find paragraphs that contain all keywords
 function intersection (keywords, invertedIndex) {
   var result = new Set (); // or a hash map
