@@ -6,6 +6,11 @@ function processTextContent(text) {
   text = text.replace(/[^\w\s]/g, ' '); // Remove all non-word and non-space characters
   text = text.replace(/\s+/g, ' ');
   text = text.toLowerCase();
+  /*
+  TODO: Return an array of sentences? instead of array of words
+        It will be used by backend to tokenize sentence into tokens and then lemmatize.
+  Return should be *sentences* not *words*
+  */
   const words = text.split(' ').filter(word => !STOP_WORDS.includes(word));
   return words;
 }
@@ -17,14 +22,27 @@ function getDOMText(selector = 'p', root = document) {
   const paragraphs = {};
   const html = document.querySelector('body').innerHTML;
 
+  /*
+  TODO :  Check backend connexion here.
+          Create flag for future
+  */
+
   elementsToExtract.forEach(elementType => {
     const regex = new RegExp(`<${elementType}[^>]*>(.*?)<\/${elementType}>`, 'gs');
     let match;
     while ((match = regex.exec(html)) !== null) {
       const text = match[1].replace(/<[^>]+>/g, '');
-      const words = processTextContent(text);
       const documentId = elementType + '_' + Object.keys(paragraphs).length;
       paragraphs[documentId] = match[1]
+
+      /*
+          /`` This is future for flag /´´
+      TODO: Add check connexion to backend?
+            If (connexion) -> processTextContent into SENTENCES
+                              Send SENTENCES to backend for **Paragraph lemmatization**
+            If NOT (connexion) -> continue as usual, make the inverted index here 
+      */
+      const words = processTextContent(text);
       words.forEach(word => {
         if (!invertedIndex[word]) {
           invertedIndex[word] = [];
@@ -35,6 +53,7 @@ function getDOMText(selector = 'p', root = document) {
   });
 
   // Send the inverted index to the background script
+  // This might NOT be the best place for send InvIndx to background,
   chrome.runtime.sendMessage({ action: 'invertedIndex', payload: invertedIndex });
 
   return { invertedIndex, paragraphs };
@@ -51,6 +70,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'performSearch') {
     const results = getDOMText('p', document);
 
+    // make up your mind . textData / invertedIndex????
     const textData = results.textData;
     paragraphs_and_ids = results.paragraphs;
 
