@@ -2,7 +2,8 @@ const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for
 
 function processTextContent(text) {
   text = text.trim();
-  text = text.replace(/[^\w\s]/g, ''); // Remove all non-word and non-space characters
+  // Idea for quick bug fix "rabbits7": '' -> ' '
+  text = text.replace(/[^\w\s]/g, ' '); // Remove all non-word and non-space characters
   text = text.replace(/\s+/g, ' ');
   text = text.toLowerCase();
   const words = text.split(' ').filter(word => !STOP_WORDS.includes(word));

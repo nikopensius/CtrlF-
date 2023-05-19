@@ -23,8 +23,7 @@ function sendRequestToServer(data) {
 
 // Example usage
 const data = {
-  content: 'Lorem ipsum dolor sit amet',
-  query: 'Lorem',
+  content: "The quick brown foxes jumped over the lazy dogs."
 };
 
 sendRequestToServer(data);
