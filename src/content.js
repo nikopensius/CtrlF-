@@ -55,10 +55,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'performSearch') {
     const results = getDOMText('p', document);
 
-    const invertedIndex = results.extractedText;
+    const textData = results.textData;
     paragraphs_and_ids = results.paragraphs;
 
-    sendResponse(invertedIndex);
+    sendResponse(textData);
   }
 });
 

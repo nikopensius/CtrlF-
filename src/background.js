@@ -56,6 +56,7 @@ function intersection (keywords, invertedIndex) {
   return Array.from (result); // convert the set to an array and return it
 }
 
+
 // Listen for the keyboard shortcut
 chrome.commands.onCommand.addListener(command => {
   if (command === 'performSearch') {
