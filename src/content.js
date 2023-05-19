@@ -13,8 +13,8 @@ function processTextContent(text) {
 
 function getDOMText(selector = 'p', root = document) {
   const elementsToExtract = ["p", "h1", "h2", "h3", "h4", "h5", "h6"];
-  const extractedText = {};
-  const paragraphs = [];
+  const invertedIndex = {};
+  const paragraphs = {};
   const html = document.querySelector('body').innerHTML;
 
   elementsToExtract.forEach(elementType => {
@@ -23,25 +23,21 @@ function getDOMText(selector = 'p', root = document) {
     while ((match = regex.exec(html)) !== null) {
       const text = match[1].replace(/<[^>]+>/g, '');
       const words = processTextContent(text);
-      const documentId = elementType + '_' + paragraphs.length;
-      const paragraphText = {
-        id: documentId,
-        text: match[1]
-      }
-      paragraphs.push(paragraphText);
+      const documentId = elementType + '_' + Object.keys(paragraphs).length;
+      paragraphs[documentId] = match[1]
       words.forEach(word => {
-        if (!extractedText[word]) {
-          extractedText[word] = [];
+        if (!invertedIndex[word]) {
+          invertedIndex[word] = [];
         }
-        extractedText[word].push(documentId);
+        invertedIndex[word].push(documentId);
       });
     }
   });
 
   // Send the inverted index to the background script
-  chrome.runtime.sendMessage({ action: 'invertedIndex', payload: extractedText });
+  chrome.runtime.sendMessage({ action: 'invertedIndex', payload: invertedIndex });
 
-  return { extractedText, paragraphs };
+  return { invertedIndex, paragraphs };
 }
 
 
@@ -65,14 +61,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 function filterParagraphs(paragraphs, idsToHighlight) {
   const textToHighlight = [];
 
-  for (let i = 0; i < paragraphs.length; i++) {
-    const paragraph = paragraphs[i];
-    if (idsToHighlight.includes(paragraph.id)) {
-      textToHighlight.push(paragraph.text);
+  for (const paragraphId of idsToHighlight) {
+    const text = paragraphs[paragraphId];
+    if (text) {
+      textToHighlight.push(text);
     }
   }
   return textToHighlight;
 }
+
 
 
 //remove any previous highlighting using span element unwrapping
