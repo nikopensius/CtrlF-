@@ -26,7 +26,45 @@ const data = {
   content: "The quick brown foxes jumped over the lazy dogs."
 };
 
-sendRequestToServer(data);
+
+//sendRequestToServer(data);
+
+
+// function to send array of words to backend for lemmatization
+async function sendWordsToBackend(words) {
+  // Define the backend URL for lemmatization
+  const backendURL = 'http://localhost:5000/lemmatize';
+
+  // Create the request payload
+  const payload = {
+    words: words
+  };
+
+  // Send the request to the backend and return the lemmatized words
+  try {
+    const response = await fetch(backendURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    return data.lemmatizedWords;
+  } catch (error) {
+    console.error('Error:', error);
+    console.log("Lemmatize word array failed, revert to fallback without lemmatization");
+    return words;
+  }
+}
+
+
+
+
+
+
+
+
 
 // function to find paragraphs that contain all keywords
 function intersection (keywords, invertedIndex) {
@@ -57,18 +95,71 @@ function intersection (keywords, invertedIndex) {
 }
 
 
+
+////////////////////////////////////////////////////////////////////////////////////
+// Text Processing and Inverted Index logic
+
+const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the', 'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'];
+
+function processTextContent(text) {
+  text = text.trim();
+  // Idea for quick bug fix "rabbits7": '' -> ' '
+  text = text.replace(/[^\w\s]/g, ' '); // Remove all non-word and non-space characters
+  text = text.replace(/\s+/g, ' ');
+  text = text.toLowerCase();
+  /*
+  TODO: Return an array of sentences? instead of array of words
+        It will be used by backend to tokenize sentence into tokens and then lemmatize.
+  Return should be *sentences* not *words*
+  */
+  const words = text.split(' ').filter(word => !STOP_WORDS.includes(word));
+  return words;
+}
+
+// Define a variable to store the inverted index
+let invertedIndex = {};
+
+// Function to build the inverted index
+function buildInvertedIndex(paragraphs) {
+  // Clear the existing inverted index
+
+  // Process each paragraph
+  Object.keys(paragraphs).forEach(documentId => {
+    const text = paragraphs[documentId];
+    let words = processTextContent(text);
+/*
+    // attempt word lemmatization using Python backend
+    words = sendWordsToBackend(words);
+*/
+    // Update the inverted index
+    words.forEach(word => {
+      if (!invertedIndex[word]) {
+        invertedIndex[word] = [];
+      }
+      invertedIndex[word].push(documentId);
+    });
+  });
+}
+
 // Listen for the keyboard shortcut
 chrome.commands.onCommand.addListener(command => {
   if (command === 'performSearch') {
-    // Send a message to the content script to inject the find bar
+    // Send a message to the content script to get the documents
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       chrome.tabs.sendMessage(
         tabs[0].id,
-        { action: 'performSearch' }
+        { action: 'getDocuments' },
+        response => {
+          // Handle the response from the content script
+          const paragraphs = response;
+          console.log("performSearch paragraphs:", paragraphs);
+          buildInvertedIndex(paragraphs);
+        }
       );
+
       chrome.tabs.executeScript(
         tabs[0].id,
-        { 
+        {
           code: 'console.log("Injected find bar");',
           allFrames: true,
           matchAboutBlank: true
@@ -79,29 +170,21 @@ chrome.commands.onCommand.addListener(command => {
             { action: 'injectFindBar' }
           );
         }
-      );      
+      );
     });
   }
 });
 
+
 // Listen for messages from the content script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'invertedIndex') {
-    // Store the inverted index
-    invertedIndexPromise = Promise.resolve(message.payload); // resolve the promise with the inverted index
-  } else if (message.action === 'userQuery') {
-    if (invertedIndexPromise) {
-      invertedIndexPromise.then((invertedIndex) => {
-        console.log("Inverted index:", invertedIndex)
-        // find paragraphs that contain user query keywords
-        const searchArray = message.payload
-        console.log("Received query words:", searchArray)
-        var paragraph_ids = intersection(searchArray, invertedIndex);
-        sendResponse(paragraph_ids);
-      })
-    } else {sendResponse({ error: 'Inverted index not available' }); // Send an error response
-  }
+  if (message.action === 'userQuery') {
+    const searchArray = message.payload;
+    console.log(invertedIndex);
+    const paragraphIds = intersection(searchArray, invertedIndex);
+    sendResponse(paragraphIds);
   }
   return true;
 });
+
 
