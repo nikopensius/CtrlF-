@@ -45,6 +45,7 @@ let paragraphs_and_ids = []
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'getDocuments') {
     const { highlightParagraphs, invIndexParagraphs } = getDOMText();
+    console.log("Inv index paragraphs:", invIndexParagraphs);
     paragraphs_and_ids = highlightParagraphs;
     sendResponse(invIndexParagraphs);
   }
@@ -116,12 +117,8 @@ function escapeRegExp(string) {
 function handleFindButtonClick() {
   const findInput = document.getElementById('tfidf-findbar-input');
   const searchString = findInput.value.trim();
-  console.log('User entered search string:', searchString);
-  // Remove non-word characters, split input into array of words
-  const searchArray = processTextContent(searchString)
-  console.log('User input processed to array:', searchArray);
   // Send message to background script with user query
-  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchArray}, function (response) {
+  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchString}, function (response) {
     console.log(response);
     const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response)
     highlightText(paragraphsToHighlight)

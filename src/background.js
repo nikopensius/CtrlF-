@@ -107,11 +107,7 @@ function processTextContent(text) {
   text = text.replace(/[^\w\s]/g, ' '); // Remove all non-word and non-space characters
   text = text.replace(/\s+/g, ' ');
   text = text.toLowerCase();
-  /*
-  TODO: Return an array of sentences? instead of array of words
-        It will be used by backend to tokenize sentence into tokens and then lemmatize.
-  Return should be *sentences* not *words*
-  */
+
   const words = text.split(' ').filter(word => !STOP_WORDS.includes(word));
   return words;
 }
@@ -179,10 +175,17 @@ chrome.commands.onCommand.addListener(command => {
 // Listen for messages from the content script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'userQuery') {
-    const searchArray = message.payload;
-    console.log(invertedIndex);
-    const paragraphIds = intersection(searchArray, invertedIndex);
-    sendResponse(paragraphIds);
+    const searchString = message.payload;
+    // Remove non-word characters, split input into array of words
+    let searchArray = processTextContent(searchString);
+    // Send word array to backend for lemmatization
+    sendWordsToBackend(searchArray)
+    .then(searchArray => {
+      const paragraphIds = intersection(searchArray, invertedIndex);
+      console.log("Inverted Index", invertedIndex)
+      console.log("Search array", searchArray)
+      sendResponse(paragraphIds);
+  })
   }
   return true;
 });
