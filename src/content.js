@@ -19,7 +19,8 @@ function processTextContent(text) {
 
 function getDOMText(selector = 'p', root = document) {
   const elementsToExtract = ["p", "h1", "h2", "h3", "h4", "h5", "h6"];
-  const paragraphs = {};
+  const inv_index_paragraphs = {};
+  const highlight_paragraphs = {};
   const html = document.querySelector('body').innerHTML;
 
   elementsToExtract.forEach(elementType => {
@@ -27,12 +28,15 @@ function getDOMText(selector = 'p', root = document) {
     let match;
     while ((match = regex.exec(html)) !== null) {
       const text = match[1].replace(/<[^>]+>/g, '');
-      const documentId = elementType + '_' + Object.keys(paragraphs).length;
-      paragraphs[documentId] = match[1];
+      const documentId = elementType + '_' + Object.keys(highlight_paragraphs).length;
+      highlight_paragraphs[documentId] = match[1];
+      inv_index_paragraphs[documentId] = text;
     }
   });
-  console.log("getDOMText paragraphs:", paragraphs);
-  return paragraphs;
+  return {
+    highlightParagraphs: highlight_paragraphs,
+    invIndexParagraphs: inv_index_paragraphs
+  };
 }
 
 
@@ -40,9 +44,9 @@ let paragraphs_and_ids = []
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'getDocuments') {
-    const paragraphs = getDOMText();
-    paragraphs_and_ids = paragraphs;
-    sendResponse(paragraphs);
+    const { highlightParagraphs, invIndexParagraphs } = getDOMText();
+    paragraphs_and_ids = highlightParagraphs;
+    sendResponse(invIndexParagraphs);
   }
 });
 
