@@ -113,25 +113,23 @@ function escapeRegExp(string) {
 
 
 
-// Define the function that handles the click event outside of the injectFindBar listener
-function handleFindButtonClick() {
-  const findInput = document.getElementById('tfidf-findbar-input');
-  const searchString = findInput.value.trim();
-  // Send message to background script with user query
-  chrome.runtime.sendMessage({ action: 'userQuery', payload: searchString}, function (response) {
-    console.log(response);
-    const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response)
-    highlightText(paragraphsToHighlight)
-  });
-
+// Define the function that handles the Enter keypress event
+function handleFindInputEnter(event) {
+  if (event.target && event.target.id === 'tfidf-findbar-input' && event.key === 'Enter') {
+    const findInput = document.getElementById('tfidf-findbar-input');
+    const searchString = findInput.value.trim();
+    // Send message to background script with user query
+    chrome.runtime.sendMessage({ action: 'userQuery', payload: searchString }, function(response) {
+      console.log(response);
+      const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response);
+      highlightText(paragraphsToHighlight);
+    });
+  }
 }
 
 // Listen for keypress events on the document and delegate to the find input
-document.addEventListener('keypress', function(event) {
-  if (event.target && event.target.id === 'tfidf-findbar-input' && event.key === 'Enter') {
-    handleFindButtonClick();
-  }
-});
+document.addEventListener('keypress', handleFindInputEnter);
+
 
 // Listen for click events on the document and delegate to the findbar close button
 document.addEventListener('click', function(event) {
@@ -153,13 +151,6 @@ document.addEventListener('keydown', function(event) {
       removePreviousHighlighting();
       findbar.remove();
     }
-  }
-});
-
-// Listen for keypress events on the document and delegate to the find input
-document.addEventListener('keypress', function(event) {
-  if (event.target && event.target.id === 'tfidf-findbar-input' && event.key === 'Enter') {
-    handleFindButtonClick();
   }
 });
 
