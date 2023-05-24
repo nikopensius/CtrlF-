@@ -38,7 +38,7 @@
           "description": "Perform the search"
         }
     },
-    "permissions": ["activeTab"],
+    "permissions": ["activeTab", "http://localhost:5000/*"], 
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "web_accessible_resources": [
       "dist/content.js"

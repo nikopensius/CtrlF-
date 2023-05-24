@@ -16,12 +16,6 @@ from collections import defaultdict
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/lemmatize', methods=['POST'])
-def lemmatize():
-    data = request.json
-    word_array = data.get('wordArray')
-
-    
 @app.route('/process', methods=['POST'])
 def process():
     data = request.json

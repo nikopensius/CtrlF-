@@ -1,33 +1,64 @@
-const performSearch = async () => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+// portion of code to test communications with Python backend
 
-  const searchInput = 'example keywords'; // Replace with your search keywords
-  const keywords = searchInput.split(/,\s*|\s+/);
-
-  await chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: () => console.log('Injected find bar'),
-    allFrames: true,
-    matchAboutBlank: true,
-  });
-
-  await chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: (keywords) => {
-      console.log('Injected keywords:', keywords);
+// Send a request to the server
+function sendRequestToServer(data) {
+  fetch('http://localhost:5000/process', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    args: [keywords],
-    allFrames: true,
-    matchAboutBlank: true,
-  });
+    body: JSON.stringify(data),
+  })
+    .then(response => response.json())
+    .then(result => {
+      // Handle the response from the server
+      console.log(result);
+      // Perform further actions with the result
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Handle errors
+    });
+}
 
-  await chrome.tabs.sendMessage(tab.id, {
-    action: 'injectFindBar',
-    keywords,
-  });
+// Example usage
+const data = {
+  content: "The quick brown foxes jumped over the lazy dogs."
 };
 
-chrome.commands.onCommand.addListener((command) => {
+sendRequestToServer(data);
+
+// function to find paragraphs that contain all keywords
+function intersection (keywords, invertedIndex) {
+  var result = new Set (); // or a hash map
+  var first = true; // flag to indicate the first keyword
+  for (var keyword of keywords) {
+    var paragraph_ids = invertedIndex [keyword]; // get the list of paragraph_ids
+    if (paragraph_ids) {
+      if (first) { // if this is the first keyword, add all the paragraphs to the result
+          for (var paragraph_id of paragraph_ids) {
+          result.add (paragraph_id); // add the paragraph_id to the result
+        }
+        first = false; // set the flag to false
+      } else { // if this is not the first keyword, intersect with the previous result
+        var temp = new Set (); // create a temporary set
+        for (var paragraph_id of paragraph_ids) {
+          if (result.has (paragraph_id)) { // if the paragraph_id is already in the result
+            temp.add (paragraph_id); // add it to the temporary set
+          }
+        }
+        result = temp; // update the result with the temporary set
+      }
+    } else { // if there is no paragraph for this keyword, return an empty result
+      return [];
+    }
+  }
+  return Array.from (result); // convert the set to an array and return it
+}
+
+
+// Listen for the keyboard shortcut
+chrome.commands.onCommand.addListener(command => {
   if (command === 'performSearch') {
     performSearch();
   }
@@ -35,37 +66,21 @@ chrome.commands.onCommand.addListener((command) => {
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.action === 'invertedIndex') {
-    const { payload: invertedIndex } = message;
-    console.log('Received inverted index:', invertedIndex);
-  } else if (message.action === 'updateKeywordScores') {
-    const { payload: query } = message;
-    const keywordScores = {};
-    for (const keyword of query.split(' ')) {
-      if (!invertedIndex.hasOwnProperty(keyword)) {
-        continue;
-      }
-      const documents = Object.keys(invertedIndex[keyword]);
-      const idf = Math.log(Object.keys(invertedIndex).length / documents.length);
-      for (const document of documents) {
-        if (!keywordScores.hasOwnProperty(document)) {
-          keywordScores[document] = 0;
-        }
-        const tf = invertedIndex[keyword][document];
-        keywordScores[document] += tf * idf;
-      }
-    }
-    console.log('Updated keyword scores:', keywordScores);
-    sendResponse();
-  } else if (message.action === 'getHighestScoringParagraphs') {
-    const { payload: { numParagraphs } } = message;
-    const paragraphIds = Object.keys(keywordScores)
-      .sort((a, b) => keywordScores[b] - keywordScores[a])
-      .slice(0, numParagraphs);
-    sendResponse(paragraphIds);
-  } else if (message.action === 'searchKeywords') {
-    const { keywords } = message;
-    console.log('Received search keywords:', keywords);
-    sendResponse({ message: 'Received search keywords' });
+    // Store the inverted index
+    invertedIndexPromise = Promise.resolve(message.payload); // resolve the promise with the inverted index
+  } else if (message.action === 'userQuery') {
+    if (invertedIndexPromise) {
+      invertedIndexPromise.then((invertedIndex) => {
+        console.log("Inverted index:", invertedIndex)
+        // find paragraphs that contain user query keywords
+        const searchArray = message.payload
+        console.log("Received query words:", searchArray)
+        var paragraph_ids = intersection(searchArray, invertedIndex);
+        sendResponse(paragraph_ids);
+      })
+    } else {sendResponse({ error: 'Inverted index not available' }); // Send an error response
+  }
   }
   return true;
 });
+
