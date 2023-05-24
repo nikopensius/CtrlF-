@@ -60,11 +60,32 @@ function intersection (keywords, invertedIndex) {
 // Listen for the keyboard shortcut
 chrome.commands.onCommand.addListener(command => {
   if (command === 'performSearch') {
-    performSearch();
+    // Send a message to the content script to inject the find bar
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: 'performSearch' }
+      );
+      chrome.tabs.executeScript(
+        tabs[0].id,
+        { 
+          code: 'console.log("Injected find bar");',
+          allFrames: true,
+          matchAboutBlank: true
+        },
+        () => {
+          chrome.tabs.sendMessage(
+            tabs[0].id,
+            { action: 'injectFindBar' }
+          );
+        }
+      );      
+    });
   }
 });
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+// Listen for messages from the content script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'invertedIndex') {
     // Store the inverted index
     invertedIndexPromise = Promise.resolve(message.payload); // resolve the promise with the inverted index
