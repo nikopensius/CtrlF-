@@ -1,8 +1,4 @@
-const STOP_WORDS = new Set([
-  'a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in',
-  'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the',
-  'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'
-]);
+const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the', 'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'];
 
 function processTextContent(text) {
   text = text.trim();
@@ -229,8 +225,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Focus the input field
     document.getElementById('tfidf-findbar-input').focus();
     sendResponse();
-  } else if (message.action === 'searchResults') {
-    // Do something with the search results
-    console.log('Search Results:', message.payload);
   }
 });
