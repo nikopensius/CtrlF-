@@ -53,5 +53,36 @@ def process():
     # Return the lemmatized inverted index
     return {'inverted_index': json_data}
 
+@app.route('/lemmatize', methods=['POST'])
+def lemmatize():
+    data = request.json
+    text_content = data.get('words')
+    output_words = []
+
+    # Tokenize the text content into sentences
+    sentences = sent_tokenize(text_content)
+
+    # Process each sentence
+    for sentence in sentences:
+        # Tokenize the sentence into words
+        words = word_tokenize(sentence.lower())
+
+        # Lemmatize the words
+        lemmatizer = WordNetLemmatizer()
+        lemmatized_words = [lemmatizer.lemmatize(word) for word in words]
+
+        # Remove stopwords
+        stop_words = set(stopwords.words('english'))
+        filtered_words = [word for word in lemmatized_words if word not in stop_words]
+
+        output_words.extend(filtered_words)
+
+    # Serialize the converted inverted_index to JSON
+    json_data = json.dumps(output_words)
+
+    # Return the lemmatized inverted index
+    return {'lemmatizedWords': json_data}
+
+
 if __name__ == '__main__':
     app.run()

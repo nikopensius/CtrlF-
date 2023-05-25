@@ -50,7 +50,8 @@ async function sendWordsToBackend(words) {
       body: JSON.stringify(payload)
     });
     const data = await response.json();
-    return data.lemmatizedWords;
+    const wordsJson = data.lemmatizedWords;
+    return JSON.parse(wordsJson);
   } catch (error) {
     console.error('Error:', error);
     console.log("Lemmatize word array failed, revert to fallback without lemmatization");
@@ -70,6 +71,9 @@ async function sendWordsToBackend(words) {
 function intersection (keywords, invertedIndex) {
   var result = new Set (); // or a hash map
   var first = true; // flag to indicate the first keyword
+  console.log("Intersection function");
+  console.log("Keywords:", keywords);
+  console.log("invertedIndex:", invertedIndex);
   for (var keyword of keywords) {
     var paragraph_ids = invertedIndex [keyword]; // get the list of paragraph_ids
     if (paragraph_ids) {
@@ -101,14 +105,19 @@ function intersection (keywords, invertedIndex) {
 
 const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the', 'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'];
 
-function processTextContent(text) {
+async function processTextContent(text) {
   text = text.trim();
-  // Idea for quick bug fix "rabbits7": '' -> ' '
   text = text.replace(/[^\w\s]/g, ' '); // Remove all non-word and non-space characters
   text = text.replace(/\s+/g, ' ');
   text = text.toLowerCase();
-
-  const words = text.split(' ').filter(word => !STOP_WORDS.includes(word));
+  let words;
+  try {
+    words = await sendWordsToBackend(text);
+  } catch (error) {
+    // Fallback: if backend connection fails, split words locally
+    console.log("Backend failure, reverting to fallback.")
+    words = text.split(' ').filter(word => !STOP_WORDS.includes(word));
+  }
   return words;
 }
 
@@ -116,26 +125,26 @@ function processTextContent(text) {
 let invertedIndex = {};
 
 // Function to build the inverted index
-function buildInvertedIndex(paragraphs) {
+async function buildInvertedIndex(paragraphs) {
   // Clear the existing inverted index
 
   // Process each paragraph
-  Object.keys(paragraphs).forEach(documentId => {
+  for (const documentId of Object.keys(paragraphs)) {
     const text = paragraphs[documentId];
-    let words = processTextContent(text);
-/*
-    // attempt word lemmatization using Python backend
-    words = sendWordsToBackend(words);
-*/
-    // Update the inverted index
-    words.forEach(word => {
-      if (!invertedIndex[word]) {
-        invertedIndex[word] = [];
-      }
-      invertedIndex[word].push(documentId);
-    });
-  });
+    try {
+      const words = await processTextContent(text);
+      words.forEach(word => {
+        if (!invertedIndex[word]) {
+          invertedIndex[word] = [];
+        }
+        invertedIndex[word].push(documentId);
+      });
+    } catch (error) {
+      console.log("Error with processed words:", error);
+    }
+  }
 }
+
 
 // Listen for the keyboard shortcut
 chrome.commands.onCommand.addListener(command => {
@@ -177,15 +186,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'userQuery') {
     const searchString = message.payload;
     // Remove non-word characters, split input into array of words
-    let searchArray = processTextContent(searchString);
-    // Send word array to backend for lemmatization
-    sendWordsToBackend(searchArray)
-    .then(searchArray => {
+    let searchArrayPromise = processTextContent(searchString);
+    searchArrayPromise.then(searchArray => {
       const paragraphIds = intersection(searchArray, invertedIndex);
       console.log("Inverted Index", invertedIndex)
       console.log("Search array", searchArray)
       sendResponse(paragraphIds);
-  })
+    }).catch(error => {
+      console.error("Error processing search array:", error);
+      sendResponse([]);
+    });
   }
   return true;
 });
