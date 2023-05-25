@@ -30,17 +30,17 @@ const data = {
 //sendRequestToServer(data);
 
 
-// function to send array of words to backend for lemmatization
+// function to send array of words to backend for stemming
 async function sendWordsToBackend(words) {
-  // Define the backend URL for lemmatization
-  const backendURL = 'http://localhost:5000/lemmatize';
+  // Define the backend URL for stemming
+  const backendURL = 'http://localhost:5000/stem';
 
   // Create the request payload
   const payload = {
     words: words
   };
 
-  // Send the request to the backend and return the lemmatized words
+  // Send the request to the backend and return the stemmed words
   try {
     const response = await fetch(backendURL, {
       method: 'POST',
@@ -50,11 +50,11 @@ async function sendWordsToBackend(words) {
       body: JSON.stringify(payload)
     });
     const data = await response.json();
-    const wordsJson = data.lemmatizedWords;
+    const wordsJson = data.stemmedWords;
     return JSON.parse(wordsJson);
   } catch (error) {
     console.error('Error:', error);
-    console.log("Lemmatize word array failed, revert to fallback without lemmatization");
+    console.log("Stem word array failed, revert to fallback without stemming");
     return words;
   }
 }

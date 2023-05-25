@@ -53,6 +53,33 @@ def process():
     # Return the lemmatized inverted index
     return {'inverted_index': json_data}
 
+from nltk.stem import PorterStemmer
+
+@app.route('/stem', methods=['POST'])
+def stem():
+    data = request.json
+    text_content = data.get('words')
+    stemmed_words = []
+
+    # Tokenize the text content into sentences
+    sentences = sent_tokenize(text_content)
+
+    # Process each sentence
+    for sentence in sentences:
+        # Tokenize the sentence into words
+        words = word_tokenize(sentence.lower())
+
+        # Stem the words
+        stemmer = PorterStemmer()
+        stemmed_words.extend([stemmer.stem(word) for word in words])
+
+    # Serialize the stemmed words to JSON
+    json_data = json.dumps(stemmed_words)
+
+    # Return the stemmed words
+    return {'stemmedWords': json_data}
+
+
 @app.route('/lemmatize', methods=['POST'])
 def lemmatize():
     data = request.json
