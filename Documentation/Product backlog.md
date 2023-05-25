@@ -66,6 +66,8 @@
 | Enhance performance and responsiveness   | 4                        | High     |
 | Implement session management             | 3                        | High     |
 | Implement error handling and validation  | 2                        | Medium   |
+| Move Inverse Index logic to backend      | 3                        | High     |
+| Add Python backend lemmatization         | 3                        | High     |
 | Add security features                    | 3                        | Medium   |
 | Implement deployment for alpha testing   | 3                        | Medium   |
 | Gather feedback from alpha testers       | -                        | Medium   |
