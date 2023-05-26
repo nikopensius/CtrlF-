@@ -72,6 +72,45 @@ async function sendWordsToBackend(words) {
 }
 
 
+async function stemParagraphsInBackend(paragraphs) {
+
+  const start_time = performance.now();
+  // Define the backend URL for stemming
+  const backendURL = 'http://localhost:5000/stemParagraphs';
+
+  // Create the request payload
+  const payload = {
+    paragraphs: paragraphs
+  };
+
+  // Send the request to the backend and return the stemmed words
+  try {
+    const response = await fetch(backendURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    const paragraphsJson = data.stemmed_paragraphs;
+    const backend_execution_time = data.execution_time;
+
+    const end_time = performance.now();
+    const total_communication_time = end_time - start_time;
+
+    const communication_time = total_communication_time - backend_execution_time;
+
+    console.log("backend time:", backend_execution_time);
+    console.log("communication time:", communication_time);
+
+    return JSON.parse(paragraphsJson);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
 
 
 
@@ -112,46 +151,36 @@ function intersection (keywords, invertedIndex) {
 ////////////////////////////////////////////////////////////////////////////////////
 // Text Processing and Inverted Index logic
 
-const STOP_WORDS = ['a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no', 'not', 'of', 'on', 'or', 'such', 'that', 'the', 'their', 'then', 'there', 'these', 'they', 'this', 'to', 'was', 'will', 'with'];
-
-async function processTextContent(text) {
+function processTextContent(text) {
   text = text.trim();
   text = text.replace(/[^\w\s]/g, ' '); // Remove all non-word and non-space characters
   text = text.replace(/\s+/g, ' ');
   text = text.toLowerCase();
-  let words;
-  try {
-    words = await sendWordsToBackend(text);
-  } catch (error) {
-    // Fallback: if backend connection fails, split words locally
-    console.log("Backend failure, reverting to fallback.")
-    words = text.split(' ').filter(word => !STOP_WORDS.includes(word));
-  }
-  return words;
+  return text;
 }
 
-// Define a variable to store the inverted index
 let invertedIndex = {};
 
-// Function to build the inverted index
 async function buildInvertedIndex(paragraphs) {
-  // Clear the existing inverted index
-
   // Process each paragraph
   for (const documentId of Object.keys(paragraphs)) {
-    const text = paragraphs[documentId];
-    try {
-      const words = await processTextContent(text);
-      words.forEach(word => {
-        if (!invertedIndex[word]) {
-          invertedIndex[word] = [];
-        }
-        invertedIndex[word].push(documentId);
-      });
-    } catch (error) {
-      console.log("Error with processed words:", error);
-    }
+    paragraphs[documentId] = processTextContent(paragraphs[documentId]);
   }
+  try {
+    stemmed_paragraphs = await stemParagraphsInBackend(paragraphs);
+  } catch (error) {
+    console.log("Error with backend stemming:", error)
+  }
+  for (const documentId of Object.keys(stemmed_paragraphs)) {
+    const stems = stemmed_paragraphs[documentId];
+    stems.forEach(stem => {
+      if (!invertedIndex[stem]) {
+        invertedIndex[stem] = [];
+      }
+      invertedIndex[stem].push(documentId);
+    });
+  }
+
 }
 
 
@@ -193,9 +222,10 @@ chrome.commands.onCommand.addListener(command => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'userQuery') {
     const searchString = message.payload;
-    // Remove non-word characters, split input into array of words
-    let searchArrayPromise = processTextContent(searchString);
-    searchArrayPromise.then(searchArray => {
+    const searchDictionary = {"q0" : searchString}
+    let searchDictPromise = stemParagraphsInBackend(searchDictionary);
+    searchDictPromise.then(searchDict => {
+      const searchArray = searchDict['q0'];
       const paragraphIds = intersection(searchArray, invertedIndex);
       sendResponse(paragraphIds);
     }).catch(error => {

@@ -57,6 +57,42 @@ def process():
 
 from nltk.stem import PorterStemmer
 
+@app.route('/stemParagraphs', methods=['POST'])
+def stemParagraphs():
+    start_time = time.time() * 1000
+    data = request.json
+    paragraphs = data.get('paragraphs')
+    stemmed_paragraphs = {}
+
+    for key in paragraphs:
+        stemmed_words = []
+        text_content = paragraphs[key]
+
+        # Tokenize the text content into sentences
+        sentences = sent_tokenize(text_content)
+
+        # Process each sentence
+        for sentence in sentences:
+            # Tokenize the sentence into words
+            words = word_tokenize(sentence.lower())
+
+            # Stem the words
+            stemmer = PorterStemmer()
+            stemmed_words.extend([stemmer.stem(word) for word in words])
+        
+        stemmed_paragraphs[key] = stemmed_words
+
+    # Serialize the stemmed words to JSON
+    json_data = json.dumps(stemmed_paragraphs)
+
+    end_time = time.time() * 1000
+
+    execution_time = end_time - start_time
+
+    # Return the stemmed words
+    return {'stemmed_paragraphs': json_data, "execution_time": execution_time}
+
+
 @app.route('/stem', methods=['POST'])
 def stem():
     start_time = time.time() * 1000
