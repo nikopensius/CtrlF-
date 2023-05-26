@@ -1,0 +1,44 @@
+# Discussion
+
+### 26.05.2023
+The backend is taking time to produce the Inverted Index.
+The bottleneck is between background.js and backend.py.
+- these communicate via fetch and Flask.
+The Inverted Index is used to to identify *paragraphs* that contain user query *keywords*.
+- each paragraph is sent from background.js to backend.js separately
+- the Inverted Index is built incrementally from the output of backend.js
+This means that if the background.js has not finished building the Inverted Index, then the highlighting will be done incompletely.
+The user will have to retype and re-send the query and they cannot be sure whether or not they got the final highlighting.
+So the problem is: the Inverted Index that serves as the basis for highlighting along with the user keywords is built incrementally and this build takes more time than it takes for a user to enter the keywords. Thus, the highlighting may be done with an incomplete Inverted Index which means that the highlighting job will also be incomplete.
+I have identified to possible fixes for this solution:
+- Build the entire Inverted Index with one go and have the user wait until it is complete
+- Build the Inverted Index incrementally as is and update the highlighting with each addition to the Inverted Index.
+The first solution is very good if the most time consuming part of building the Inverted Index is the communication between client and server. This way, we could cut down on the Inverted Index build time and produce a finished highlighting job with one go.
+The second solution is better if the time consuming part is the work that is done in the server. If communication is fast, but the NLP that goes on in the backend is slow, then building an Inverted Index in one go and having the user wait is not so good. Then we would like to start giving the user the highlighting results: thus showing that work is being done and already feeding the results. For big files, this is the way that Chrome's **Ctrl+F** does it as well.
+
+So the main thing to find out, I think, is what takes longer: **the backend processing** or **the client-server communication**.
+
+To find this out, I am going to time the backend processing tasks and the time it takes for the information to pass between the client and the server.
+Timing the time of the backend processing will be simple: I can just use the Python built-in current time method orsmth like that and a little arithmetic and print the results. I wonder if I can also print the accumulated time?
+Calculating the time for client-server communication will be a bit more difficult I guess?
+I will have to time Python backend as well.
+And then I will have to time the time between background.js sending the fetch and receiving the response. Then I will have to subtract the Python backend working time from that.
+So the main thing now will be finding out the methods to use in both things and putting down the arithmetic. The final logic will be simple.
+
+*Communication start time*
+js: Send fetch request
+*Backend start time*
+py: Do NLP
+*Backend end time*
+js: Receive response
+*Communication end time*
+
+*backend time = Backend end time - Backend start time*
+*communication time = (Communication end time - Communication start time) - backend time*
+
+*backend takes longer = backend time > communication time*
+*communication takes longer = !(backend takes longer)*
+
+## Test results
+Test results show that backend process takes about 50-300 times less than communication which means that 50-300 paragraphs are processed in the time it takes for a paragraph to be transported to and fro the backend.
+Based on this analysis, all of the documents are first collected in the background.js and only then sent to the backend for processing.

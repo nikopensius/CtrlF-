@@ -32,6 +32,8 @@ const data = {
 
 // function to send array of words to backend for stemming
 async function sendWordsToBackend(words) {
+
+  const start_time = performance.now();
   // Define the backend URL for stemming
   const backendURL = 'http://localhost:5000/stem';
 
@@ -50,7 +52,17 @@ async function sendWordsToBackend(words) {
       body: JSON.stringify(payload)
     });
     const data = await response.json();
-    const wordsJson = data.stemmedWords;
+    const wordsJson = data.stemmed_words;
+    const backend_execution_time = data.execution_time;
+
+    const end_time = performance.now();
+    const total_communication_time = end_time - start_time;
+
+    const communication_time = total_communication_time - backend_execution_time;
+
+    console.log("backend time:", backend_execution_time);
+    console.log("communication time:", communication_time);
+
     return JSON.parse(wordsJson);
   } catch (error) {
     console.error('Error:', error);
@@ -71,9 +83,6 @@ async function sendWordsToBackend(words) {
 function intersection (keywords, invertedIndex) {
   var result = new Set (); // or a hash map
   var first = true; // flag to indicate the first keyword
-  console.log("Intersection function");
-  console.log("Keywords:", keywords);
-  console.log("invertedIndex:", invertedIndex);
   for (var keyword of keywords) {
     var paragraph_ids = invertedIndex [keyword]; // get the list of paragraph_ids
     if (paragraph_ids) {
@@ -157,7 +166,6 @@ chrome.commands.onCommand.addListener(command => {
         response => {
           // Handle the response from the content script
           const paragraphs = response;
-          console.log("performSearch paragraphs:", paragraphs);
           buildInvertedIndex(paragraphs);
         }
       );
@@ -189,8 +197,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     let searchArrayPromise = processTextContent(searchString);
     searchArrayPromise.then(searchArray => {
       const paragraphIds = intersection(searchArray, invertedIndex);
-      console.log("Inverted Index", invertedIndex)
-      console.log("Search array", searchArray)
       sendResponse(paragraphIds);
     }).catch(error => {
       console.error("Error processing search array:", error);

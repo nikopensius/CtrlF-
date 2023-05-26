@@ -3,6 +3,8 @@ from flask_cors import CORS
 
 import json
 
+import time
+
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
@@ -57,6 +59,7 @@ from nltk.stem import PorterStemmer
 
 @app.route('/stem', methods=['POST'])
 def stem():
+    start_time = time.time() * 1000
     data = request.json
     text_content = data.get('words')
     stemmed_words = []
@@ -76,8 +79,12 @@ def stem():
     # Serialize the stemmed words to JSON
     json_data = json.dumps(stemmed_words)
 
+    end_time = time.time() * 1000
+
+    execution_time = end_time - start_time
+
     # Return the stemmed words
-    return {'stemmedWords': json_data}
+    return {'stemmed_words': json_data, "execution_time": execution_time}
 
 
 @app.route('/lemmatize', methods=['POST'])
