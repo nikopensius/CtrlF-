@@ -1,6 +1,6 @@
 # Discussion
 
-### 26.05.2023
+## 26.05.2023
 The backend is taking time to produce the Inverted Index.
 The bottleneck is between background.js and backend.py.
 - these communicate via fetch and Flask.
@@ -39,6 +39,15 @@ js: Receive response
 *backend takes longer = backend time > communication time*
 *communication takes longer = !(backend takes longer)*
 
-## Test results
+### Test results
 Test results show that backend process takes about 50-300 times less than communication which means that 50-300 paragraphs are processed in the time it takes for a paragraph to be transported to and fro the backend.
 Based on this analysis, all of the documents are first collected in the background.js and only then sent to the backend for processing.
+
+## 27.05.2023
+Navigation tools work nicely, position and count are shown, findbar looks good and finding is solid.
+Sadly, it basically just works on Wikipedia. Other pages' DOM is a bit too complicated for it. So a future goal:
+- customize it to also work on some other major websites for information retrieval.
+In addition, just doing some random searches in articles, I found that it would be good to add a different shade of highlight to the actual search keywords, and maybe also include synonyms allready to highten the "fuzzy" aspect of ctrlF+ functionality.
+- Maybe add a gradient element so that the search words and/or synonyms are a darker hue and surrounding context is a lighter hue so that more relevant parts of paragraphs could be identified?
+- Also, the exact keywords could turn into an orangey color like in CtrlF, and synonyms could turn into a greener hue to show that these are also valid, but not exactly what was entered?
+- Also, highlight the occurences in the scrollbar on the side of the browser.
