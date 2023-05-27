@@ -78,8 +78,15 @@ function removePreviousHighlighting() {
 }
 
 
+let paragraphIds = []; // Array to store the paragraphIds
+let currentIndex = -1; // Current index of the highlighted paragraph
 
 function highlightText(paragraphsToHighlight) {
+
+  // Reset the paragraphIds and currentIndex
+  paragraphIds = [];
+  currentIndex = -1;
+
   // Create a <style> element
   var styleElement = document.createElement('style');
 
@@ -91,17 +98,18 @@ function highlightText(paragraphsToHighlight) {
 
   // Append the <style> element to the <head> section
   document.head.appendChild(styleElement);
-  
-  // remove any previous highlighting
+
   removePreviousHighlighting();
 
   const body = document.querySelector('body');
   let html = body.innerHTML;
 
 
-  paragraphsToHighlight.forEach(paragraph => {
+  paragraphsToHighlight.forEach((paragraph, index) => {
+    const paragraphId = `highlighted-section-${index + 1}`;
     const regex = new RegExp(escapeRegExp(paragraph), 'gi');
-    html = html.replace(regex, `<span class="highlight">${paragraph}</span>`);
+    html = html.replace(regex, `<span id="${paragraphId}" class="highlight">${paragraph}</span>`);
+    paragraphIds.push(paragraphId);
   });
   body.innerHTML = html;
 }
@@ -123,6 +131,10 @@ function handleFindInputEnter(event) {
       console.log(response);
       const paragraphsToHighlight = filterParagraphs(paragraphs_and_ids, response);
       highlightText(paragraphsToHighlight);
+      if (paragraphsToHighlight.length > 0) {
+        navigateToNext();
+      }
+      updatePositionCount();
     });
   }
 }
@@ -143,6 +155,18 @@ document.addEventListener('click', function(event) {
   }
 });
 
+document.addEventListener('click', function(event) {
+  if (event.target && event.target.id === 'tfidf-findbar-previous') {
+    navigateToPrevious();
+  }
+});
+
+document.addEventListener('click', function(event) {
+  if (event.target && event.target.id === 'tfidf-findbar-next') {
+    navigateToNext();
+  }
+});
+
 // Event listener for "Esc" key press
 document.addEventListener('keydown', function(event) {
   if (event.key === 'Escape') {
@@ -154,6 +178,35 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
+function scrollToParagraph(paragraphId) {
+  const paragraphElement = document.getElementById(paragraphId);
+  if (paragraphElement) {
+    paragraphElement.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function navigateToPrevious() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    scrollToParagraph(paragraphIds[currentIndex]);
+    updatePositionCount();
+  }
+}
+
+function navigateToNext() {
+  if (currentIndex < paragraphIds.length - 1) {
+    currentIndex++;
+    scrollToParagraph(paragraphIds[currentIndex]);
+    updatePositionCount();
+  }
+}
+
+function updatePositionCount() {
+  const positionCountElement = document.getElementById('tfidf-findbar-position');
+  positionCountElement.textContent = `${currentIndex + 1}/${paragraphIds.length}`;
+}
+
+
 
 // Function to inject the find bar into the DOM
 function injectFindBar() {
@@ -162,14 +215,22 @@ function injectFindBar() {
     return;
   }
   
+
+  
   // Inject the find bar into the DOM
   const findbar = document.createElement('div');
   findbar.id = 'tfidf-findbar';
   findbar.innerHTML = `
-  <div style="position: fixed; top: 0; right: 0; width: 300px; padding: 10px; background-color: #fff; border-radius: 10px; border: 1px solid #ccc; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); z-index: 9999;">
-    <input type="text" id="tfidf-findbar-input" placeholder="Insert keywords and hit Enter" autofocus style="border: none; outline: none; width: 60%" autocomplete="off">
-    <button id="tfidf-findbar-close" style="position: absolute; top: 10px; right: 15px; font-weight: bold; border: none; background-color: #fff; cursor: pointer;">X</button>
+  <div id="tfidf-findbar" style="position: fixed; top: 0; right: 0; width: 300px; padding: 10px; background-color: #fff; border-radius: 10px; border: 1px solid #ccc; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); z-index: 9999; display: flex; align-items: center;">
+  <input type="text" id="tfidf-findbar-input" placeholder="Insert keywords and hit Enter" autofocus style="border: none; outline: none; flex: 1; margin-right: 5px;" autocomplete="off">
+  <div style="display: flex; align-items: center; margin-right: 5px;">
+    <div id="tfidf-findbar-position" style="font-size: 14px; margin-right: 5px;"></div>
+    <button id="tfidf-findbar-previous" style="border: none; background-color: #fff; cursor: pointer;">&#9650;</button>
+    <button id="tfidf-findbar-next" style="border: none; background-color: #fff; cursor: pointer;">&#9660;</button>
   </div>
+  <button id="tfidf-findbar-close" style="font-weight: bold; border: none; background-color: #fff; cursor: pointer;">X</button>
+</div>
+
   `
   /*
 
