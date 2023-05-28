@@ -2,6 +2,8 @@
 
 The CtrlF+ extension is a browser extension designed for the latest version of Chrome. It allows users to search for text sections that contain specified keywords, without case sensitivity or the need to pay attention to word form or inflections.
 
+The CtrlF+ extension is currently optimized for use in English language Wikipedia.
+
 ## Installation
 
 To install the CtrlF+ extension, follow these steps:
