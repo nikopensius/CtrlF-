@@ -224,6 +224,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const searchString = message.payload;
     const searchDictionary = {"q0" : searchString}
     let searchDictPromise = stemParagraphsInBackend(searchDictionary);
+    console.log(invertedIndex);
     searchDictPromise.then(searchDict => {
       const searchArray = searchDict['q0'];
       const paragraphIds = intersection(searchArray, invertedIndex);
