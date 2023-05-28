@@ -10,7 +10,8 @@ To install the CtrlF+ extension, follow these steps:
 
 1. Download the extension package from the [CtrlF+ GitHub repository](https://github.com/nikopensius/CtrlF-).
   You can do this by clicking on the green `Code` button and then clicking on `Download ZIP` in the dropdown box.
-2. Open your browser's extension management page. On Chrome, you can do this by entering `chrome://extensions/` into the browser's address bar.
+2. Make sure the extracted file is named "CtrlF-". E.g not "CtrlF--main", otherwise rename it to "CtrlF-".
+3. Open your browser's extension management page. On Chrome, you can do this by entering `chrome://extensions/` into the browser's address bar.
 4. Enable "Developer mode" if not already enabled.
 5. Click on "Load unpacked" or "Load extension" and select the downloaded extension package.
 6. The CtrlF+ extension will be installed and ready to use.
