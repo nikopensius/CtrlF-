@@ -27,7 +27,7 @@ To run the CtrlF+ backend server, please follow these steps:
 2. Open a PowerShell window with administrator privileges.
 3. Run the command `Set-ExecutionPolicy RemoteSigned` to enable running scripts.
 4. Navigate to the downloaded extension directory in the PowerShell window.
-5. Run the script `run_backend.ps1`.
+5. Run the script `.\run_backend.ps1`.
 6. Follow the instructions provided in the PowerShell window if running the script fails.
 7. To exit the backend server, press `Ctrl+C` in the PowerShell window where the backend is running.
 
