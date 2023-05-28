@@ -9,10 +9,11 @@ The CtrlF+ extension is currently optimized for use in English language Wikipedi
 To install the CtrlF+ extension, follow these steps:
 
 1. Download the extension package from the [CtrlF+ GitHub repository](https://github.com/nikopensius/CtrlF-).
-2. Open your browser's extension management page.
-3. Enable "Developer mode" if not already enabled.
-4. Click on "Load unpacked" or "Load extension" and select the downloaded extension package.
-5. The CtrlF+ extension will be installed and ready to use.
+- You can do this by clicking on the green `Code` button and then clicking on `Download ZIP` in the dropdown box.
+3. Open your browser's extension management page.
+4. Enable "Developer mode" if not already enabled.
+5. Click on "Load unpacked" or "Load extension" and select the downloaded extension package.
+6. The CtrlF+ extension will be installed and ready to use.
 
 Please note that the CtrlF+ extension has been developed and tested for the latest version of Chrome.
 
