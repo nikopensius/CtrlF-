@@ -29,7 +29,7 @@ To run the CtrlF+ backend server, please follow these steps:
 5. Run the command `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process` to enable running scripts.
 6. Run the command `cd .\Downloads\CtrlF--main\CtrlF--main\` to navigate to the project directory.
 7. Run the command `.\ctrlf\Scripts\activate` to activate the python virtual environment. When prompted, enter `r` to approve running environment. 
-8. Run the command `python Python\backend.py` to run the Python backend application. 
+8. Run the command `python Python\backend.py` to run the Python backend application. Ignore the warning.
 9. Once you're done using the extension, to close the backend application, press `Ctrl+C` in the PowerShell window where the backend is running.
 10. To exit the virtual environment, run the command `deactivate`. After that, you can close the PowerShell window.
 
