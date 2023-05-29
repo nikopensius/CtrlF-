@@ -23,7 +23,7 @@ Please note that the CtrlF+ extension has been developed and tested for the late
 
 To run the CtrlF+ backend server, please follow these steps:
 
-1. Ensure latest Python is installed on your device. You can install it from the [Python website](https://www.python.org) or Microsoft Store.
+1. Ensure latest Python is installed on your device. You can install it from the **Microsoft Store** app on your device if you're a Windows user or from the [Python website](https://www.python.org).
 2. Open a PowerShell window with administrator privileges.
 3. Run the command `python --version` to check if python is installed. If succesful, the console should print the current version of Python installed on your device.
 4. Run the command `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process` to enable running scripts.
