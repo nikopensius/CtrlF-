@@ -135,6 +135,7 @@ function handleFindInputEnter(event) {
         navigateToNext();
       }
       updatePositionCount();
+      
     });
   }
 }
