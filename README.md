@@ -10,11 +10,11 @@ To install the CtrlF+ extension, follow these steps:
 
 1. Download the extension package from the [CtrlF+ GitHub repository](https://github.com/nikopensius/CtrlF-).
 You can do this by clicking on the green `Code` button and then clicking on `Download ZIP` in the dropdown box.
-2. Extract the content of the ZIP file to a directory of your choosing. Extracting it to the Downloads directory will do fine.
-3. Make sure the extracted file is named "CtrlF-". E.g not "CtrlF--main", and rename it to "CtrlF-" if needed.
+2. Extract the content of the ZIP file. Use the default dictionary for extraction.
+3. If all is done correctly, the Downloads directory should contain a `CtrlF--main` folder, which in turn contains another, inner `CtrlF--main` folder.
 4. Open your browser's extension management page. On Chrome, you can do this by entering `chrome://extensions/` into the browser's address bar.
 5. Enable "Developer mode" if not already enabled.
-6. Click on "Load unpacked" or "Load extension" and select the downloaded extension package.
+6. Click on "Load unpacked" or "Load extension" and select the extracted extension package. This is the inner `CtrlF--main` folder.
 7. The CtrlF+ extension will be installed and ready to use.
 
 Please note that the CtrlF+ extension has been developed and tested for the latest version of Chrome.
@@ -31,15 +31,16 @@ To run the CtrlF+ backend server, please follow these steps:
 6. Run the command `.\ctrlf\Scripts\activate` to activate the python virtual environment. When prompted, enter `r` to approve running environment. 
 7. Run the command `python Python\backend.py` to run the Python backend application. 
 8. Once you're done using the extension, to close the backend application, press `Ctrl+C` in the PowerShell window where the backend is running.
-9. To exit the virtual environment, type `deactivate`. After that, you can close the PowerShell window.
+9. To exit the virtual environment, run the command `deactivate`. After that, you can close the PowerShell window.
 
 ## Usage
 
-1. Press `Ctrl+Shift+F` to open the CtrlF+ find bar. No additional configuration is required.
-2. Enter your search query in the input field. (Keywords can be separated by spaces and/or commas.)
-3. Press `Enter` to start the search.
-4. Use the navigation buttons to move through the search results.
-5. Press `Esc` or click on the `X`-button again to close the CtrlF+ find bar.
+1. Make sure you've installed the extension and run the backend server.
+2. In Chrome, press `Ctrl+Shift+F` to open the CtrlF+ find bar. No additional configuration is required.
+3. Enter your search query in the input field. (Keywords can be separated by spaces and/or commas.)
+4. Press `Enter` to start the search.
+5. Use the navigation buttons to move through the search results.
+6. Press `Esc` or click on the `X`-button again to close the CtrlF+ find bar.
 
 ## Security and Privacy
 
