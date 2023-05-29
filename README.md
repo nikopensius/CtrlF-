@@ -30,12 +30,13 @@ To run the CtrlF+ backend server, please follow these steps:
 6. Run the command `cd .\Downloads\CtrlF--main\CtrlF--main\` to navigate to the project directory.
 7. Run the command `.\ctrlf\Scripts\activate` to activate the python virtual environment. When prompted, enter `r` to approve running environment. 
 8. Run the command `python Python\backend.py` to run the Python backend application. Ignore the warning.
-9. Once you're done using the extension, to close the backend application, press `Ctrl+C` in the PowerShell window where the backend is running.
-10. To exit the virtual environment, run the command `deactivate`. After that, you can close the PowerShell window.
+9. The backend server is running and ready to use.
+10. Once you're done using the extension, to close the backend, press `Ctrl+C` in the PowerShell window where the backend is running.
+11. To exit the virtual environment, run the command `deactivate`. After that, you can close the PowerShell window.
 
 ## Usage
 
-1. Make sure you've installed the extension and run the backend server.
+1. Make sure you've installed the extension and that the backend server is running.
 2. In Chrome, press `Ctrl+Shift+F` to open the CtrlF+ find bar. No additional configuration is required.
 3. Enter your search query in the input field. (Keywords can be separated by spaces and/or commas.)
 4. Press `Enter` to start the search.
