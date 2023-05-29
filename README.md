@@ -23,15 +23,15 @@ Please note that the CtrlF+ extension has been developed and tested for the late
 
 To run the CtrlF+ backend server, please follow these steps:
 
-1. Ensure latest Python is installed on your device. You can install it from the **Microsoft Store** app on your device if you're a Windows user or from the [Python website](https://www.python.org).
-2. Open a PowerShell window with administrator privileges.
-3. Run the command `python --version` to check if python is installed. If succesful, the console should print the current version of Python installed on your device.
-4. Run the command `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process` to enable running scripts.
-5. Run the command `cd .\Downloads\CtrlF--main\CtrlF--main\` to navigate to the project directory.
-6. Run the command `.\ctrlf\Scripts\activate` to activate the python virtual environment. When prompted, enter `r` to approve running environment. 
-7. Run the command `python Python\backend.py` to run the Python backend application. 
-8. Once you're done using the extension, to close the backend application, press `Ctrl+C` in the PowerShell window where the backend is running.
-9. To exit the virtual environment, run the command `deactivate`. After that, you can close the PowerShell window.
+1. Ensure latest Python is installed on your device. You can install it from **Microsoft Store** or from the [Python website](https://www.python.org). Or use a quick link for [macOS](https://www.python.org/ftp/python/3.11.3/python-3.11.3-macos11.pkg) or [Windows](https://www.python.org/ftp/python/3.11.3/python-3.11.3-amd64.exe) that downloads the Python 3.11.3 installer, dated April 5, 2023.
+3. Open a PowerShell window with administrator privileges.
+4. Run the command `python --version` to check if python is installed. If succesful, the console should print the current version of Python installed on your device.
+5. Run the command `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process` to enable running scripts.
+6. Run the command `cd .\Downloads\CtrlF--main\CtrlF--main\` to navigate to the project directory.
+7. Run the command `.\ctrlf\Scripts\activate` to activate the python virtual environment. When prompted, enter `r` to approve running environment. 
+8. Run the command `python Python\backend.py` to run the Python backend application. 
+9. Once you're done using the extension, to close the backend application, press `Ctrl+C` in the PowerShell window where the backend is running.
+10. To exit the virtual environment, run the command `deactivate`. After that, you can close the PowerShell window.
 
 ## Usage
 
