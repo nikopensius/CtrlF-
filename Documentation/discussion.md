@@ -51,3 +51,36 @@ In addition, just doing some random searches in articles, I found that it would 
 - Maybe add a gradient element so that the search words and/or synonyms are a darker hue and surrounding context is a lighter hue so that more relevant parts of paragraphs could be identified?
 - Also, the exact keywords could turn into an orangey color like in CtrlF, and synonyms could turn into a greener hue to show that these are also valid, but not exactly what was entered?
 - Also, highlight the occurences in the scrollbar on the side of the browser.
+
+## 16.07.2023
+## RELAUNCH
+### Prototype
+The project left off with a finished prototype for CtrlF+.
+It worked best on English language Wikipedia, the environment used for development and testing.
+- English - NLTK is the NLP library used, it supports English. The NLP functionalities do not work on other language sites, but the extension is overall operable and will yield highlighting results for exact matches (this has to do with foreign words not being stemmed in NLTK, thus they retain their original form)
+- Wikipedia - the site uses a simple standard for HTML formating of web page content. Everything is neatly organized into headings, subheadings, paragraphs and lists. Even in Wikipedia, some more complicated HTML structures are not processed in the CtrlF+ prototype, thus the highlighting results, allthough good for practical use cases, are not exhaustive for the web page content on Wikipedia.
+
+The techniques and technologies used in CtrlF+ prototype are DOM manipulation for web content retrieval, parsing and highlighting tasks. A web page is broken down into documents and tagged for later highlighting purposes.
+The keyword finding makes use of inverted indexing for easy document retrieval and stemming for fuzzy search.
+### Next steps
+There are two main branches into which the project can venture:
+1. Make it work on every web page across the web.
+2. Make the finding functionality better.
+
+The first branch requires some experience with DOM manipulation, building web pages, HTML and JavaScript.
+The main objective is to produce documents for the keyword finding process for any kind of web page.
+Ideas for different tasks:
+- compile a varied set of web pages
+- analyze and categorize web pages according to style, used languages and techniques and so forth
+- augment the content extraction and document tagging modules to handle all different web pages
+
+The second branch will explore different ways to produce better highlighting results.
+The main key here is to explore a wide variety of techniques in a secluded test environment.
+Get to know potential stakeholders use styles and needs. The question is "how would one go about using a fuzzy find bar?"
+Ideas for different tasks:
+- explore different techniques: vectorization and cosine similarity, query expansion with synonyms, hypernyms...
+- conduct stakeholder experiments: use volunteers, give them tasks, record finding, analyze
+
+The main idea is to build a tool that is intuitive and robust.
+For future steps, for example making the extension work across the web, the team will need to be bigger. Someone with xp in working with web pages, html, DOM and js is needed.
+It would also be nice to have someone with some scientific thinking and experimentation experience on the team, good if they know NLP and Python.
